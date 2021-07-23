@@ -4,3 +4,9 @@ emcc_binary(
     name = "binary",
     srcs = ["main.cpp"],
 )
+
+sh_test(
+    name = "test_binary",
+    srcs = ["test_binary.sh"],
+    data = [":binary"],
+)

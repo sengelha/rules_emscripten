@@ -6,7 +6,7 @@ def _impl(ctx):
         transitive = [x[CcInfo].compilation_context.includes for x in ctx.attr.deps],
     )
 
-    output_file = ctx.actions.declare_file(ctx.label.name)
+    output_file = ctx.actions.declare_file(ctx.label.name + ".js")
 
     args = ctx.actions.args()
     args.add("-o", output_file)
