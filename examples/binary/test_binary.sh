@@ -3,6 +3,7 @@
 set -euo pipefail
 set -x
 
-node examples/binary/calc.js
+find .
 
-exit 1
+cat examples/binary/binary.js
+node examples/binary/binary.js

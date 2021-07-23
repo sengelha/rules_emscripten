@@ -11,6 +11,9 @@ def _impl(ctx):
     args = ctx.actions.args()
     args.add("-o", output_file)
     args.add_all("-I", include_dirs)
+
+    # TODO: change options based on -c opt
+    args.add("-O0")
     args.add_all(ctx.files.srcs)
     ctx.actions.run(
         inputs = depset(
