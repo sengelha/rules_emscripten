@@ -6,11 +6,13 @@ def _impl(ctx):
         transitive = [x[CcInfo].compilation_context.includes for x in ctx.attr.deps],
     )
 
-    output_file = ctx.actions.declare_file(ctx.label.name + ".js")
+    output_js = ctx.actions.declare_file(ctx.label.name + ".js")
+    output_wasm = ctx.actions.declare_file(ctx.label.name + ".wasm")
 
     args = ctx.actions.args()
-    args.add("-o", output_file)
+    args.add("-o", output_js)
     args.add_all("-I", include_dirs)
+    args.add("-s", "MODULARIZE=1")
 
     # TODO: change options based on -c opt
     args.add("-O0")
@@ -20,7 +22,7 @@ def _impl(ctx):
             direct = ctx.files.srcs,
             transitive = [headers],
         ),
-        outputs = [output_file],
+        outputs = [output_js, output_wasm],
         # TODO: Use downloaded toolchain
         executable = "/usr/local/bin/emcc",
         arguments = [args],
@@ -32,8 +34,8 @@ def _impl(ctx):
     )
 
     return DefaultInfo(
-        files = depset([output_file]),
-        runfiles = ctx.runfiles(files = [output_file]),
+        files = depset([output_js, output_wasm]),
+        runfiles = ctx.runfiles(files = [output_js, output_wasm]),
     )
 
 emcc_module = rule(

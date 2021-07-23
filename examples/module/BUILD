@@ -7,7 +7,10 @@ emcc_module(
 
 # TODO: replace below with a javascript program
 sh_test(
-    name = "test_lib",
-    srcs = ["test_lib.sh"],
-    data = [":calc"],
+    name = "test_module",
+    srcs = ["test_module.sh"],
+    data = [
+        "test_module.js",
+        ":calc",
+    ],
 )
