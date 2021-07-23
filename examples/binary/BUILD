@@ -8,5 +8,6 @@ emcc_binary(
 sh_test(
     name = "test_binary",
     srcs = ["test_binary.sh"],
+    args = ["$(location :binary)"],
     data = [":binary"],
 )
