@@ -6,8 +6,10 @@ def _impl(ctx):
         transitive = [x[CcInfo].compilation_context.includes for x in ctx.attr.deps],
     )
 
+    output_file = ctx.actions.declare_file(ctx.label.name)
+
     args = ctx.actions.args()
-    args.add("-o", ctx.outputs.executable)
+    args.add("-o", output_file)
     args.add_all("-I", include_dirs)
     args.add_all(ctx.files.srcs)
     ctx.actions.run(
@@ -15,7 +17,7 @@ def _impl(ctx):
             direct = ctx.files.srcs,
             transitive = [headers],
         ),
-        outputs = [ctx.outputs.executable],
+        outputs = [output_file],
         # TODO: Use downloaded toolchain
         executable = "/usr/local/bin/emcc",
         arguments = [args],
@@ -26,9 +28,24 @@ def _impl(ctx):
         },
     )
 
+    bin_wrapper = ctx.actions.declare_file(ctx.label.name + "%/bin_wrapper.sh")
+
+    # TODO: change node to use a downloaded toolchain
+    ctx.actions.write(
+        output = bin_wrapper,
+        content = """#!/bin/bash
+
+set -euo pipefail
+
+node {output_file}
+""".format(output_file = output_file.short_path),
+        is_executable = True,
+    )
+
     return DefaultInfo(
-        files = depset([ctx.outputs.executable]),
-        executable = ctx.outputs.executable,
+        files = depset([output_file]),
+        executable = bin_wrapper,
+        runfiles = ctx.runfiles(files = [output_file]),
     )
 
 emcc_binary = rule(
@@ -36,6 +53,6 @@ emcc_binary = rule(
     executable = True,
     attrs = {
         "srcs": attr.label_list(allow_files = True),
-        "deps": attr.label_list(),
+        "deps": attr.label_list(providers = [CcInfo]),
     },
 )
