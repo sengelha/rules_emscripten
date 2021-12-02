@@ -4,6 +4,10 @@
 Bazel rules for building C/C++ code into Javascript using the
 Emscripten toolset.
 
+## Build Status
+
+![Build Status](https://github.com/sengelha/streaming-percentiles/actions/workflows/ci.yml/badge.svg)
+
 <!-- omit in toc -->
 ## Table of Contents
 
@@ -17,10 +21,6 @@ Emscripten toolset.
     - [Attributes](#attributes-1)
   - [emcc_module](#emcc_module)
     - [Attributes](#attributes-2)
-
-## Build Status
-
-![Build Status](https://github.com/sengelha/streaming-percentiles/actions/workflows/ci.yml/badge.svg)
 
 ## Quick Start Guide
 
