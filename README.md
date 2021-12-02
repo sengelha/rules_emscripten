@@ -7,6 +7,7 @@ Emscripten toolset.
 <!-- omit in toc -->
 ## Table of Contents
 
+- [Build Status](#build-status)
 - [Quick Start Guide](#quick-start-guide)
 - [Repository Rules](#repository-rules)
   - [emscripten_setup](#emscripten_setup)
@@ -16,6 +17,10 @@ Emscripten toolset.
     - [Attributes](#attributes-1)
   - [emcc_module](#emcc_module)
     - [Attributes](#attributes-2)
+
+## Build Status
+
+![Build Status](https://github.com/sengelha/streaming-percentiles/actions/workflows/ci.yml/badge.svg)
 
 ## Quick Start Guide
 
