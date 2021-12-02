@@ -1,0 +1,22 @@
+load("@rules_emscripten//emscripten:def.bzl", "declare_toolchains", "emscripten_sdk")
+
+filegroup(
+    name = "emsdk",
+    srcs = glob(["emsdk/**"]),
+)
+
+emscripten_sdk(
+    name = "emscripten_sdk",
+    emos = "{emos}",
+    emarch = "{emarch}",
+    root_file = "ROOT",
+    emsdk = [":emsdk"],
+    cache = "cache",
+    emcc = "bin/emcc{exe}",
+    emcc_py = "bin/emcc.py",
+)
+
+declare_toolchains(
+    host = "{emos}_{emarch}",
+    sdk = ":emscripten_sdk",
+)
