@@ -7,6 +7,8 @@ jobs:
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04, macos-10.15]
     steps:
+      - name: Setup emscripten
+        uses: mymindstorm/setup-emsdk@v11
       - name: Checkout repository and submodules
         uses: actions/checkout@v2
         with:
