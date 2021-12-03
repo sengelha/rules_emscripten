@@ -4,6 +4,7 @@ def emscripten_context(ctx):
         # Fields
         actions = ctx.actions,
         runfiles = ctx.runfiles,
+        toolchain = toolchain,
         sdk = toolchain.sdk,
         # Action generators
         binary = toolchain.actions.binary,
