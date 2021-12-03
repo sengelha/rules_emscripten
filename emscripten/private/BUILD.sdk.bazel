@@ -1,4 +1,5 @@
 load("@rules_emscripten//emscripten:def.bzl", "declare_toolchains", "emscripten_sdk")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 
 filegroup(
     name = "emsdk",
@@ -9,14 +10,18 @@ emscripten_sdk(
     name = "emscripten_sdk",
     emos = "{emos}",
     emarch = "{emarch}",
-    root_file = "ROOT",
-    emsdk = [":emsdk"],
-    cache = "cache",
     emcc = "bin/emcc{exe}",
-    emcc_py = "bin/emcc.py",
+    emsdk = [":emsdk"],
+    emconfig = ".emconfig",
+)
+
+go_binary(
+    name = "builder",
+    srcs = ["@rules_emscripten//emscripten/private/tools/builder:builder_srcs"],
 )
 
 declare_toolchains(
     host = "{emos}_{emarch}",
     sdk = ":emscripten_sdk",
+    builder = ":builder",
 )

@@ -1,4 +1,5 @@
 load("//emscripten/private:platforms.bzl", "generate_toolchain_names")
+load("//emscripten/private:sdk_list.bzl", "DEFAULT_VERSION", "SDK_REPOSITORIES")
 
 def _detect_host_platform(ctx):
     if ctx.os.name == "linux":
@@ -47,8 +48,7 @@ def _detect_host_platform(ctx):
 
     return emos, emarch
 
-def _sdk_build_file(ctx, platform):
-    ctx.file("ROOT")
+def _create_build_file(ctx, platform):
     emos, _, emarch = platform.partition("_")
     ctx.template(
         "BUILD.bazel",
@@ -61,11 +61,6 @@ def _sdk_build_file(ctx, platform):
         },
     )
 
-def _detect_host_sdk(ctx):
-    if "EMSDK" in ctx.os.environ:
-        return ctx.os.environ["EMSDK"]
-    fail("Could not find host EMSDK")
-
 def _find_cache_dir(ctx):
     if "HOME" in ctx.os.environ:
         home_cache_dir = ctx.path(ctx.os.environ["HOME"] + "/.emscripten_cache")
@@ -73,26 +68,58 @@ def _find_cache_dir(ctx):
             return home_cache_dir
     return None
 
-def _local_sdk(ctx, emsdk):
-    for entry in ["upstream"]:
-        ctx.symlink(emsdk + "/" + entry, "sdk/" + entry)
+def _create_cache_dir(ctx):
+    cache_dir = _find_cache_dir(ctx)
+    if cache_dir:
+        ctx.symlink(cache_dir, "cache")
+    else:
+        res = ctx.execute(["mkdir", "cache"])
+        if res.return_code:
+            fail("Failed to create cache directory")
 
+def _create_emconfig(ctx):
+    if "EMSDK" in ctx.os.environ:
+        binaryen_root = "{}/upstream".format(ctx.os.environ["EMSDK"])
+        emscripten_root = ctx.os.environ["EMSDK"]
+        llvm_root = "{}/upstream/bin".format(ctx.os.environ["EMSDK"])
+    else:
+        binaryen_root = str(ctx.path("emsdk").realpath)
+        emscripten_root = str(ctx.path("emsdk").realpath)
+        llvm_root = str(ctx.path("emsdk").get_child("bin").realpath)
+    
+    ctx.template(
+        ".emconfig",
+        Label("@rules_emscripten//emscripten/private:emconfig.sdk"),
+        executable = False,
+        substitutions = {
+            "{cache}": str(ctx.path("cache").realpath),
+            "{binaryen_root}": binaryen_root,
+            "{emscripten_root}": emscripten_root,
+            "{llvm_root}": llvm_root,
+            "{node_js}": str(ctx.which("node").realpath),
+        }
+    )
+
+def _detect_host_sdk(ctx):
+    if "EMSDK" in ctx.os.environ:
+        return ctx.os.environ["EMSDK"]
+    fail("Could not find host EMSDK")
+
+def _local_sdk(ctx, emsdk):
     for exe in ["emcc", "emcc.py"]:
         path = ctx.which(exe)
         if not path:
-            fail("Could not find path to {}", exe)
+            fail("Could not find path to {}".format(exe))
         ctx.symlink(path, "bin/" + exe)
-
-    res = ctx.execute(["mkdir", "cache"])
-    if res.return_code:
-        fail("Failed to create cache directory")
 
 def _emscripten_host_sdk_impl(ctx):
     emsdk = _detect_host_sdk(ctx)
     emos, emarch = _detect_host_platform(ctx)
     platform = emos + "_" + emarch
-    _sdk_build_file(ctx, platform)
     _local_sdk(ctx, emsdk)
+    _create_build_file(ctx, platform)
+    _create_cache_dir(ctx)
+    _create_emconfig(ctx)
 
 _emscripten_host_sdk = repository_rule(
     implementation = _emscripten_host_sdk_impl,
@@ -110,8 +137,62 @@ def emscripten_host_sdk(name, **kwargs):
     _emscripten_host_sdk(name = name, **kwargs)
     _register_toolchains(name)
 
-def emscripten_setup(version = None):
-    if version == "host":
-        emscripten_host_sdk(name = "emscripten_sdk")
+def _remote_sdk(ctx, urls, sha256):
+    if not urls:
+        fail("No urls specified")
+
+    if urls[0].endswith(".tbz2"):
+        urltype = "tar.bz2"
     else:
-        fail("Version {} not understood".format(version))
+        urltype = ""
+
+    ctx.download_and_extract(
+        url = urls,
+        sha256 = sha256,
+        type = urltype,
+        output = "emsdk",
+        stripPrefix = "install",
+    )
+
+    ctx.file(
+        "bin/emcc",
+        content = """#!/bin/bash
+
+set -euo pipefail
+
+exec ./external/emscripten_sdk/emsdk/emscripten/emcc $*""",
+        executable = True,
+    )
+
+def _emscripten_download_sdk_impl(ctx):
+    if ctx.attr.version:
+        version = ctx.attr.version
+    else:
+        version = DEFAULT_VERSION
+
+    sdks = SDK_REPOSITORIES[version]
+    emos, emarch = _detect_host_platform(ctx)
+    platform = emos + "_" + emarch
+    url, sha256 = sdks[platform]
+    _remote_sdk(ctx, [url], sha256)
+    _create_build_file(ctx, platform)
+    _create_cache_dir(ctx)
+    _create_emconfig(ctx)
+
+    if not ctx.attr.version:
+        return {
+            "name": ctx.attr.name,
+            "version": version,
+        }
+    return None
+
+_emscripten_download_sdk = repository_rule(
+    implementation = _emscripten_download_sdk_impl,
+    attrs = {
+        "version": attr.string(),
+    },
+)
+
+def emscripten_download_sdk(name, **kwargs):
+    _emscripten_download_sdk(name = name, **kwargs)
+    _register_toolchains(name)

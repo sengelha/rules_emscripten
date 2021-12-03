@@ -4,18 +4,22 @@ def compile(emscripten, srcs):
         obj = emscripten.actions.declare_file(src.basename + ".o")
 
         args = emscripten.actions.args()
-        args.add("-c")
+        args.add("compile")
         args.add("-o", obj)
+        args.add("-e", emscripten.sdk.emcc)
+        args.add("-c", emscripten.sdk.emconfig)
         args.add(src)
         emscripten.actions.run(
-            inputs = [src, emscripten.sdk.emcc_py],
+            inputs = [src, emscripten.sdk.emconfig] + emscripten.sdk.emsdk,
             outputs = [obj],
-            executable = emscripten.sdk.emcc,
+            executable = emscripten.toolchain._builder,
             arguments = [args],
+            tools = [emscripten.sdk.emcc],
             mnemonic = "EmccCompile",
-            env = {
-                "EM_CACHE": emscripten.sdk.cache.path,
-            },
+            # no-sandbox because emcc will write to the repository's cache directory
+            execution_requirements = {
+                "no-sandbox": "1",
+            }
         )
         objs.append(obj)
 
