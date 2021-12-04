@@ -7,5 +7,7 @@ def emscripten_context(ctx):
         sdk = toolchain.sdk,
         # Action generators
         binary = toolchain.actions.binary,
+        compile = toolchain.actions.compile,
+        link = toolchain.actions.link,
         module = toolchain.actions.module,
     )
