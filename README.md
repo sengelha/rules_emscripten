@@ -35,7 +35,7 @@ git_repository(
 
 load("@rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies", "emscripten_setup")
 emscripten_rules_dependencies()
-emscripten_setup(version = "host")
+emscripten_setup()
 ```
 
 Add the following stanza to `BUILD`, adjusting as needed:
