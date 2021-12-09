@@ -7,6 +7,7 @@ def _impl(ctx):
         emscripten,
         name = ctx.label.name,
         srcs = ctx.files.srcs,
+        linkopts = ctx.attr.linkopts,
     )
 
     return DefaultInfo(
@@ -19,6 +20,7 @@ emcc_module = rule(
     attrs = {
         "srcs": attr.label_list(allow_files = True),
         "deps": attr.label_list(),
+        "linkopts": attr.string_list(),
     },
     toolchains = ["@rules_emscripten//emscripten:toolchain"],
 )

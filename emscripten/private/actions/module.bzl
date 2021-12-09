@@ -1,4 +1,4 @@
-def emit_module(emscripten, name = "", srcs = []):
+def emit_module(emscripten, name = "", srcs = [], linkopts = []):
     objs = emscripten.compile(
         emscripten,
         srcs = srcs
@@ -8,6 +8,7 @@ def emit_module(emscripten, name = "", srcs = []):
         emscripten,
         name = name,
         objs = objs,
+        linkopts = linkopts,
         modularize = True,
     )
 
