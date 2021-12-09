@@ -1,0 +1,16 @@
+load("@rules_emscripten//emscripten:def.bzl", "emcc_library")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
+
+emcc_library(
+    name = "module",
+    srcs = ["lib.c"],
+)
+
+nodejs_test(
+    name = "test_module",
+    data = [
+        ":module",
+        "@npm//tape",
+    ],
+    entry_point = "test_module.js",
+)

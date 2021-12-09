@@ -3,16 +3,16 @@ load("//emscripten/private:context.bzl", "emscripten_context")
 def _impl(ctx):
     emscripten = emscripten_context(ctx)
 
-    js, wasm, executable, runfiles = emscripten.binary(
+    results = emscripten.binary(
         emscripten,
         name = ctx.label.name,
         srcs = ctx.files.srcs,
     )
 
     return DefaultInfo(
-        files = depset([js, wasm]),
-        executable = executable,
-        runfiles = runfiles,
+        files = results.files,
+        executable = results.executable,
+        runfiles = results.runfiles,
     )
 
 emcc_binary = rule(
@@ -20,7 +20,6 @@ emcc_binary = rule(
     executable = True,
     attrs = {
         "srcs": attr.label_list(allow_files = True),
-        "deps": attr.label_list(providers = [CcInfo]),
     },
     toolchains = ["@rules_emscripten//emscripten:toolchain"],
 )

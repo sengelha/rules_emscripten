@@ -1,9 +1,10 @@
-load("@rules_emscripten//emscripten:def.bzl", "emcc_module")
+load("@rules_emscripten//emscripten:def.bzl", "emcc_library")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 
-emcc_module(
+emcc_library(
     name = "module",
-    srcs = ["lib.c"],
+    srcs = ["lib.cpp"],
+    linkopts = ["--bind"],
 )
 
 nodejs_test(
