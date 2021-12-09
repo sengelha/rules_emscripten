@@ -16,6 +16,11 @@ func link(args []string) error {
 	emConfig := flags.String("c", "", "The emscripten config file")
 	linkopts := flags.String("l", "", "Link options to pass to emcc")
 	modularize := flags.Bool("m", false, "Whether to modularize the result")
+	prejs := flags.String("p", "", "The file to use as a pre-js")
+	postjs := flags.String("P", "", "The file to use as a post-js")
+	extprejs := flags.String("x", "", "The file to use as an extern-pre-js")
+	extpostjs := flags.String("X", "", "The file to use as an extern-post-js")
+	wasm := flags.Bool("w", false, "Whether to output WASM")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -50,6 +55,21 @@ func link(args []string) error {
 	}
 	if *linkopts != "" {
 		emccArgs = append(emccArgs, strings.Split(*linkopts, ";")...)
+	}
+	if *prejs != "" {
+		emccArgs = append(emccArgs, "--pre-js", *prejs)
+	}
+	if *postjs != "" {
+		emccArgs = append(emccArgs, "--post-js", *postjs)
+	}
+	if *extprejs != "" {
+		emccArgs = append(emccArgs, "--extern-pre-js", *extprejs)
+	}
+	if *extpostjs != "" {
+		emccArgs = append(emccArgs, "--extern-post-js", *extpostjs)
+	}
+	if !*wasm {
+		emccArgs = append(emccArgs, "-s", "WASM=0")
 	}
 	emccArgs = append(emccArgs, objFiles...)
 	cmd := exec.Command(*emcc, emccArgs...)
