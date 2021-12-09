@@ -1,6 +1,8 @@
 def compile(emscripten, srcs):
     objs = []
     for src in srcs:
+        if src.basename.endswith(".hpp"):
+            continue
         obj = emscripten.actions.declare_file(src.basename + ".o")
 
         args = emscripten.actions.args()
