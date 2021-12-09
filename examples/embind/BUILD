@@ -1,4 +1,5 @@
 load("@rules_emscripten//emscripten:def.bzl", "emcc_module")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 
 emcc_module(
     name = "module",
@@ -6,13 +7,11 @@ emcc_module(
     linkopts = ["--bind"],
 )
 
-# TODO: replace below with a rules_nodejs program that is called
-# directly
-sh_test(
+nodejs_test(
     name = "test_module",
-    srcs = ["test_module.sh"],
     data = [
-        "test_module.js",
         ":module",
+        "@npm//tape",
     ],
+    entry_point = "test_module.js",
 )
