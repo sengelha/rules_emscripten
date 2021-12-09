@@ -9,6 +9,6 @@ def emscripten_context(ctx):
         # Action generators
         binary = toolchain.actions.binary,
         compile = toolchain.actions.compile,
+        library = toolchain.actions.library,
         link = toolchain.actions.link,
-        module = toolchain.actions.module,
     )

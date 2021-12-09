@@ -25,4 +25,6 @@ def compile(emscripten, srcs):
         )
         objs.append(obj)
 
-    return objs
+    return struct(
+        objs = objs,
+    )

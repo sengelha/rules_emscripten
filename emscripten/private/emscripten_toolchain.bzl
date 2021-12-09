@@ -2,8 +2,8 @@ load("//emscripten/private:platforms.bzl", "PLATFORMS")
 load("//emscripten/private:providers.bzl", "EmscriptenSDK")
 load("//emscripten/private/actions:binary.bzl", "emit_binary")
 load("//emscripten/private/actions:compile.bzl", "compile")
+load("//emscripten/private/actions:library.bzl", "emit_library")
 load("//emscripten/private/actions:link.bzl", "link")
-load("//emscripten/private/actions:module.bzl", "emit_module")
 
 def _impl(ctx):
     sdk = ctx.attr.sdk[EmscriptenSDK]
@@ -17,8 +17,8 @@ def _impl(ctx):
         actions = struct(
             binary = emit_binary,
             compile = compile,
+            library = emit_library,
             link = link,
-            module = emit_module,
         ),
         sdk = sdk,
         # Internal fields -- may be read by emit functions.
