@@ -6,7 +6,7 @@ Emscripten toolset.
 
 ## Build Status
 
-![Build Status](https://github.com/sengelha/streaming-percentiles/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/sengelha/rules_emscripten/actions/workflows/ci.yml/badge.svg)
 
 <!-- omit in toc -->
 ## Table of Contents
