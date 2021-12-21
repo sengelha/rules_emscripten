@@ -1,7 +1,9 @@
 def _binary(emscripten, name = "", srcs = []):
+    nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
+
     compile_results = emscripten.compile(
         emscripten,
-        srcs = srcs
+        srcs = srcs,
     )
 
     link_results = emscripten.link(
@@ -22,11 +24,14 @@ def _binary(emscripten, name = "", srcs = []):
 
 set -euo pipefail
 
-exec node {js_file}""".format(js_file = link_results.output_js.short_path),
+exec {node} {js_file}""".format(
+            node = nodetoolchain.nodeinfo.tool_files[0].path,
+            js_file = link_results.output_js.short_path
+        ),
         is_executable = True,
     )
 
-    runfiles = emscripten.runfiles(output_arr)
+    runfiles = emscripten.runfiles(output_arr + nodetoolchain.nodeinfo.tool_files)
 
     return struct(
         files = depset(output_arr),
@@ -61,16 +66,18 @@ def _library(emscripten, name = "", srcs = [], modularize = True, emit_wasm = Tr
     )
 
 def emscripten_context(ctx):
-    toolchain = ctx.toolchains["@rules_emscripten//emscripten:toolchain"]
+    emtoolchain = ctx.toolchains["@rules_emscripten//emscripten:toolchain"]
+
     return struct(
         # Fields
         actions = ctx.actions,
+        attr = ctx.attr,
+        file = ctx.file,
         runfiles = ctx.runfiles,
-        toolchain = toolchain,
-        sdk = toolchain.sdk,
+        toolchains = ctx.toolchains,
         # Action generators
         binary = _binary,
-        compile = toolchain.actions.compile,
+        compile = emtoolchain.actions.compile,
         library = _library,
-        link = toolchain.actions.link,
+        link = emtoolchain.actions.link,
     )
