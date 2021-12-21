@@ -12,6 +12,7 @@ import (
 func link(args []string) error {
 	flags := flag.NewFlagSet("EmccLink", flag.ExitOnError)
 	emcc := flags.String("e", "", "The emcc executable")
+	node := flags.String("n", "", "The node executable")
 	output := flags.String("o", "", "The output object file")
 	emConfig := flags.String("c", "", "The emscripten config file")
 	linkopts := flags.String("l", "", "Link options to pass to emcc")
@@ -29,6 +30,9 @@ func link(args []string) error {
 	if *emcc == "" {
 		return fmt.Errorf("emcc binary not specified")
 	}
+	if (*node == "") {
+		return fmt.Errorf("node binary not specified")
+	}
 	if *output == "" {
 		return fmt.Errorf("output file not specified")
 	}
@@ -43,8 +47,14 @@ func link(args []string) error {
 	if err != nil {
 		return err
 	}
+	nodeAbsPath, err := filepath.Abs(*node)
+	if err != nil {
+		return err
+	}
+
 	environ := os.Environ()
 	environ = append(environ, fmt.Sprintf("EM_CONFIG=%s", emConfigAbsPath))
+	environ = append(environ, fmt.Sprintf("EM_NODE_JS=%s", nodeAbsPath))
 	if os.Getenv("PATH") == "" {
 		environ = append(environ, "PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin")
 	}

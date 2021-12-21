@@ -21,5 +21,8 @@ emcc_binary = rule(
     attrs = {
         "srcs": attr.label_list(allow_files = True),
     },
-    toolchains = ["@rules_emscripten//emscripten:toolchain"],
+    toolchains = [
+        "@rules_emscripten//emscripten:toolchain",
+        "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
+    ],
 )

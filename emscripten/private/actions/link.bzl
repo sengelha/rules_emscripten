@@ -1,13 +1,17 @@
 def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = False, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None):
-    inputs = objs + [emscripten.sdk.emconfig] + emscripten.sdk.emsdk
+    emtoolchain = emscripten.toolchains["@rules_emscripten//emscripten:toolchain"]
+    nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
+
+    inputs = objs + [emtoolchain.sdk.emconfig]
     output_js = emscripten.actions.declare_file(name + ".js")
     outputs = [output_js]
 
     args = emscripten.actions.args()
     args.add("link")
     args.add("-o", output_js)
-    args.add("-e", emscripten.sdk.emcc)
-    args.add("-c", emscripten.sdk.emconfig)
+    args.add("-e", emtoolchain.sdk.emcc)
+    args.add("-c", emtoolchain.sdk.emconfig)
+    args.add("-n", nodetoolchain.nodeinfo.tool_files[0])
     args.add_joined("-l", linkopts, join_with = ";")
     if modularize:
         args.add("-m")
@@ -34,9 +38,9 @@ def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = 
     emscripten.actions.run(
         inputs = inputs,
         outputs = outputs,
-        executable = emscripten.toolchain._builder,
+        executable = emtoolchain._builder,
         arguments = [args],
-        tools = [emscripten.sdk.emcc],
+        tools = [emtoolchain.sdk.emcc] + emtoolchain.sdk.emsdk + nodetoolchain.nodeinfo.tool_files,
         mnemonic = "EmccLink",
         # no-sandbox because emcc will write to the repository's cache directory
         execution_requirements = {
