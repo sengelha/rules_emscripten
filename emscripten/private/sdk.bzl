@@ -87,10 +87,6 @@ def _create_emconfig(ctx):
         emscripten_root = str(ctx.path("emsdk").realpath)
         llvm_root = str(ctx.path("emsdk").get_child("bin").realpath)
     
-    node_path = ctx.which("node")
-    if not node_path:
-        fail("Could not find node binary in system PATH")
-
     ctx.template(
         ".emconfig",
         Label("@rules_emscripten//emscripten/private:emconfig.sdk"),
@@ -100,7 +96,6 @@ def _create_emconfig(ctx):
             "{binaryen_root}": binaryen_root,
             "{emscripten_root}": emscripten_root,
             "{llvm_root}": llvm_root,
-            "{node_js}": str(node_path.realpath),
         }
     )
 

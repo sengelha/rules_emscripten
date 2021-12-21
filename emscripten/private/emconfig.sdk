@@ -2,5 +2,5 @@
 EMSCRIPTEN_ROOT='{emscripten_root}'
 LLVM_ROOT='{llvm_root}'
 BINARYEN_ROOT='{binaryen_root}'
-NODE_JS='{node_js}'
+NODE_JS='node'
 CACHE='{cache}'

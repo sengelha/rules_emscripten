@@ -37,5 +37,8 @@ emcc_library = rule(
         "extern_post_js": attr.label(allow_single_file = True),
         "linkopts": attr.string_list(),
     },
-    toolchains = ["@rules_emscripten//emscripten:toolchain"],
+    toolchains = [
+        "@rules_emscripten//emscripten:toolchain",
+        "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
+    ],
 )
