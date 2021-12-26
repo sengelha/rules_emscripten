@@ -1,21 +1,27 @@
-def _binary(emscripten, name = "", srcs = []):
+def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init_file = True, configuration = "fastbuild"):
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
     compile_results = emscripten.compile(
         emscripten,
+        name = name,
         srcs = srcs,
+        configuration = configuration,
     )
 
     link_results = emscripten.link(
         emscripten,
         name = name,
         objs = compile_results.objs,
-        emit_wasm = True,
+        emit_wasm = emit_wasm,
+        emit_memory_init_file = emit_memory_init_file,
+        configuration = configuration,
     )
 
     output_arr = [link_results.output_js]
     if link_results.output_wasm:
         output_arr.append(link_results.output_wasm)
+    if link_results.output_mem_init:
+        output_arr.append(link_results.output_mem_init)
 
     executable = emscripten.actions.declare_file("{}_/binary.sh".format(name))
     emscripten.actions.write(
@@ -37,14 +43,17 @@ exec {node} {js_file}""".format(
         files = depset(output_arr),
         output_js = link_results.output_js,
         output_wasm = link_results.output_wasm,
+        output_mem_init = link_results.output_mem_init,
         executable = executable,
         runfiles = runfiles,
     )
 
-def _library(emscripten, name = "", srcs = [], modularize = True, emit_wasm = True, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None, linkopts = []):
+def _library(emscripten, name = "", srcs = [], modularize = True, emit_wasm = True, emit_memory_init_file = True, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None, linkopts = [], configuration = None):
     compile_results = emscripten.compile(
         emscripten,
+        name = name,
         srcs = srcs,
+        configuration = configuration,
     )
 
     link_results = emscripten.link(
@@ -53,16 +62,19 @@ def _library(emscripten, name = "", srcs = [], modularize = True, emit_wasm = Tr
         objs = compile_results.objs,
         modularize = modularize,
         emit_wasm = emit_wasm,
+        emit_memory_init_file = emit_memory_init_file,
         pre_js = pre_js,
         post_js = post_js,
         extern_pre_js = extern_pre_js,
         extern_post_js = extern_post_js,
         linkopts = linkopts,
+        configuration = configuration,
     )
 
     return struct(
         output_js = link_results.output_js,
         output_wasm = link_results.output_wasm,
+        output_mem_init = link_results.output_mem_init,
     )
 
 def emscripten_context(ctx):

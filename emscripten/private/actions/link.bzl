@@ -1,4 +1,4 @@
-def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = False, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None):
+def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = False, emit_memory_init_file = False, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None, configuration = None):
     emtoolchain = emscripten.toolchains["@rules_emscripten//emscripten:toolchain"]
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
@@ -13,6 +13,14 @@ def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = 
     args.add("-c", emtoolchain.sdk.emconfig)
     args.add("-n", nodetoolchain.nodeinfo.tool_files[0])
     args.add_joined("-l", linkopts, join_with = ";")
+    if not emit_wasm and emit_memory_init_file:
+        args.add("-M")
+        output_mem_init = emscripten.actions.declare_file(name + ".mem")
+        outputs.append(output_mem_init)
+    else:
+        output_mem_init = None
+    if configuration:
+        args.add("-C", configuration)
     if modularize:
         args.add("-m")
     if pre_js:
@@ -33,7 +41,6 @@ def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = 
         outputs.append(output_wasm)
     else:
         output_wasm = None
-
     args.add_all(objs)
     emscripten.actions.run(
         inputs = inputs,
@@ -51,4 +58,5 @@ def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = 
     return struct(
         output_js = output_js,
         output_wasm = output_wasm,
+        output_mem_init = output_mem_init,
     )
