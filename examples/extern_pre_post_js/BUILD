@@ -6,6 +6,7 @@ emcc_library(
     srcs = ["lib.cpp"],
     modularize = False,
     emit_wasm = False,
+    emit_memory_init_file = False,
     extern_pre_js = "pre.js",
     extern_post_js = "post.js",
     linkopts = ["--bind"],

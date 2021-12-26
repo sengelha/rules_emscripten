@@ -1,4 +1,4 @@
-def compile(emscripten, srcs):
+def compile(emscripten, name, srcs, configuration):
     emtoolchain = emscripten.toolchains["@rules_emscripten//emscripten:toolchain"]
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
@@ -6,7 +6,7 @@ def compile(emscripten, srcs):
     for src in srcs:
         if src.basename.endswith(".hpp"):
             continue
-        obj = emscripten.actions.declare_file(src.basename + ".o")
+        obj = emscripten.actions.declare_file("{}_/{}.o".format(name, src.path))
 
         args = emscripten.actions.args()
         args.add("compile")
@@ -14,6 +14,8 @@ def compile(emscripten, srcs):
         args.add("-e", emtoolchain.sdk.emcc)
         args.add("-c", emtoolchain.sdk.emconfig)
         args.add("-n", nodetoolchain.nodeinfo.tool_files[0])
+        if configuration:
+            args.add("-C", configuration)
         args.add(src)
         emscripten.actions.run(
             inputs = [src, emtoolchain.sdk.emconfig],
