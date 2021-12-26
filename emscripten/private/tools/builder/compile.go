@@ -14,6 +14,7 @@ func compile(args []string) error {
 	node := flags.String("n", "", "The node executable")
 	output := flags.String("o", "", "The output object file")
 	emConfig := flags.String("c", "", "The emscripten config file")
+	configuration := flags.String("C", "", "The build configuration (opt, dbg, or fastbuild)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -52,6 +53,11 @@ func compile(args []string) error {
 	}
 
 	emccArgs := []string{"-c", "-o", *output}
+	if *configuration == "opt" {
+		emccArgs = append(emccArgs, "-O3", "-DNDEBUG")
+	} else {
+		emccArgs = append(emccArgs, "-O0")
+	}
 	emccArgs = append(emccArgs, srcFiles...)
 	cmd := exec.Command(*emcc, emccArgs...)
 	cmd.Stdout = os.Stdout

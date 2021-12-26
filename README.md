@@ -76,11 +76,12 @@ file) and allows it be executed via `bazel run`.
 
 #### Attributes
 
-| Attribute Name | Type             | Required?  | Description                                            |
-| -------------- | ---------------- | ---------- | ------------------------------------------------------ |
-| `name`         | `Name`           | `required` | A unique name for this rule.                           |
-| `srcs`         | `List of files`  | `required` | A list of source files required to compile the binary. |
-| `deps`         | `List of labels` | `optional` | The dependencies of this rule.                         |
+| Attribute Name  | Type             | Required?  | Description                                                                                                                  |
+| --------------- | ---------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `name`          | `Name`           | `required` | A unique name for this rule.                                                                                                 |
+| `srcs`          | `List of files`  | `required` | A list of source files required to compile the binary.                                                                       |
+| `deps`          | `List of labels` | `optional` | The dependencies of this rule.                                                                                               |
+| `configuration` | `String`         | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |
 
 ### emcc_module
 
@@ -94,3 +95,4 @@ file).
 | `name`         | `Name`           | `required` | A unique name for this rule.                           |
 | `srcs`         | `List of files`  | `required` | A list of source files required to compile the module. |
 | `deps`         | `List of labels` | `optional` | The dependencies of this rule.                         |
+| `configuration` | `String`         | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |

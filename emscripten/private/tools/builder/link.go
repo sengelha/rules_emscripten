@@ -15,8 +15,10 @@ func link(args []string) error {
 	node := flags.String("n", "", "The node executable")
 	output := flags.String("o", "", "The output object file")
 	emConfig := flags.String("c", "", "The emscripten config file")
+	configuration := flags.String("C", "", "The build configuration (opt, dbg, or fastbuild)")
 	linkopts := flags.String("l", "", "Link options to pass to emcc")
 	modularize := flags.Bool("m", false, "Whether to modularize the result")
+	outputMemInit := flags.Bool("M", false, "Whether to output the memory init file")
 	prejs := flags.String("p", "", "The file to use as a pre-js")
 	postjs := flags.String("P", "", "The file to use as a post-js")
 	extprejs := flags.String("x", "", "The file to use as an extern-pre-js")
@@ -60,8 +62,18 @@ func link(args []string) error {
 	}
 
 	emccArgs := []string{"-o", *output}
+	if *outputMemInit {
+		emccArgs = append(emccArgs, "--memory-init-file", "1")
+	} else {
+		emccArgs = append(emccArgs, "--memory-init-file", "0")
+	}
 	if *modularize {
 		emccArgs = append(emccArgs, "-s", "MODULARIZE=1")
+	}
+	if *configuration == "opt" {
+		emccArgs = append(emccArgs, "-O3", "-DNDEBUG")
+	} else {
+		emccArgs = append(emccArgs, "-O0")
 	}
 	if *linkopts != "" {
 		emccArgs = append(emccArgs, strings.Split(*linkopts, ";")...)
