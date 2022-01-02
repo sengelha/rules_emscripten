@@ -5,9 +5,9 @@ emcc_binary(
     srcs = ["main.cpp"],
 )
 
-sh_test(
+py_test(
     name = "test_binary",
-    srcs = ["test_binary.sh"],
+    srcs = ["test_binary.py"],
     args = ["$(location :binary)"],
     data = [":binary"],
     tags = ["L0"],
