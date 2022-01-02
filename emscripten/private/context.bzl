@@ -1,4 +1,4 @@
-def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init_file = True, configuration = "fastbuild"):
+def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init_file = True, configuration = "fastbuild", is_windows = False):
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
     compile_results = emscripten.compile(
@@ -23,19 +23,39 @@ def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init
     if link_results.output_mem_init:
         output_arr.append(link_results.output_mem_init)
 
-    executable = emscripten.actions.declare_file("{}_/binary.sh".format(name))
-    emscripten.actions.write(
-        output = executable,
-        content = """#!/bin/bash
+    if is_windows:
+        executable = emscripten.actions.declare_file("{}_/binary.bat".format(name))
+        emscripten.actions.write(
+            output = executable,
+            content = """@echo off
+
+for /f "tokens=1,2" %%a in (MANIFEST) do (
+    if "%%a" == "nodejs_windows_amd64/bin/nodejs/node.exe" (
+        "%%b" "{js_file}"
+        exit /b
+    )
+)
+
+echo ERROR: Node exe not found
+exit /b 1""".format(
+                js_file = link_results.output_js.short_path.replace("/", "\\"),
+            ),
+            is_executable = True,
+        )
+    else:
+        executable = emscripten.actions.declare_file("{}_/binary.sh".format(name))
+        emscripten.actions.write(
+            output = executable,
+            content = """#!/bin/bash
 
 set -euo pipefail
 
 exec {node} {js_file}""".format(
-            node = nodetoolchain.nodeinfo.tool_files[0].path,
-            js_file = link_results.output_js.short_path
-        ),
-        is_executable = True,
-    )
+                node = nodetoolchain.nodeinfo.tool_files[0].path,
+                js_file = link_results.output_js.short_path
+            ),
+            is_executable = True,
+        )
 
     runfiles = emscripten.runfiles(output_arr + nodetoolchain.nodeinfo.tool_files)
 

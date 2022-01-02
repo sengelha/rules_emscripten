@@ -48,6 +48,10 @@ def _detect_host_platform(ctx):
 
     return emos, emarch
 
+def _is_windows(ctx):
+    emos, emarch = _detect_host_platform(ctx)
+    return emos == "windows"
+
 def _create_build_file(ctx, platform):
     emos, _, emarch = platform.partition("_")
     ctx.template(
@@ -57,7 +61,7 @@ def _create_build_file(ctx, platform):
         substitutions = {
             "{emos}": emos,
             "{emarch}": emarch,
-            "{exe}": ".exe" if emos == "windows" else "",
+            "{emcc}": "emsdk/emscripten/emcc.bat" if _is_windows(ctx) else "emsdk/emscripten/emcc",
         },
     )
 
@@ -73,9 +77,8 @@ def _create_cache_dir(ctx):
     if cache_dir:
         ctx.symlink(cache_dir, "cache")
     else:
-        res = ctx.execute(["mkdir", "cache"])
-        if res.return_code:
-            fail("Failed to create cache directory")
+        # Implicitly emcc cache directory by creating a sentinel file within it
+        ctx.file("cache/.sentinel")
 
 def _create_emconfig(ctx):
     if "EMSDK" in ctx.os.environ:
@@ -105,7 +108,8 @@ def _detect_host_sdk(ctx):
     fail("Could not find host EMSDK")
 
 def _local_sdk(ctx, emsdk):
-    for exe in ["emcc", "emcc.py"]:
+    emcc_exe = "emcc.bat" if _is_windows(ctx) else "emcc"
+    for exe in [emcc_exe, "emcc.py"]:
         path = ctx.which(exe)
         if not path:
             fail("Could not find path to {}".format(exe))
@@ -153,16 +157,6 @@ def _remote_sdk(ctx, urls, sha256):
         stripPrefix = "install",
     )
 
-    ctx.file(
-        "bin/emcc",
-        content = """#!/bin/bash
-
-set -euo pipefail
-
-exec ./external/emscripten_sdk/emsdk/emscripten/emcc $*""",
-        executable = True,
-    )
-
 def _emscripten_download_sdk_impl(ctx):
     if ctx.attr.version:
         version = ctx.attr.version
@@ -190,6 +184,7 @@ _emscripten_download_sdk = repository_rule(
     attrs = {
         "version": attr.string(),
     },
+    environ = ["PATH"],
 )
 
 def emscripten_download_sdk(name, **kwargs):

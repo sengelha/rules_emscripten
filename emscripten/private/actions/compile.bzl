@@ -24,6 +24,8 @@ def compile(emscripten, name, srcs, configuration):
             arguments = [args],
             tools = [emtoolchain.sdk.emcc] + emtoolchain.sdk.emsdk + nodetoolchain.nodeinfo.tool_files,
             mnemonic = "EmccCompile",
+            # builder requires PATH to be set
+            use_default_shell_env = True,
             # no-sandbox because emcc will write to the repository's cache directory
             execution_requirements = {
                 "no-sandbox": "1",

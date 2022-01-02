@@ -10,7 +10,7 @@ emscripten_sdk(
     name = "emscripten_sdk",
     emos = "{emos}",
     emarch = "{emarch}",
-    emcc = "bin/emcc{exe}",
+    emcc = "{emcc}",
     emsdk = [":emsdk"],
     emconfig = ".emconfig",
 )

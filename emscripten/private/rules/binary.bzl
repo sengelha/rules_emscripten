@@ -19,6 +19,7 @@ def _impl(ctx):
         emit_wasm = ctx.attr.emit_wasm,
         emit_memory_init_file = ctx.attr.emit_memory_init_file,
         configuration = configuration,
+        is_windows = ctx.attr.is_windows,
     )
 
     return DefaultInfo(
@@ -27,7 +28,7 @@ def _impl(ctx):
         runfiles = results.runfiles,
     )
 
-emcc_binary = rule(
+_emcc_binary = rule(
     implementation = _impl,
     executable = True,
     attrs = {
@@ -35,9 +36,20 @@ emcc_binary = rule(
         "emit_wasm": attr.bool(default = True),
         "emit_memory_init_file": attr.bool(default = True),
         "configuration": attr.string(mandatory = False),
+        'is_windows': attr.bool(mandatory = True),
     },
     toolchains = [
         "@rules_emscripten//emscripten:toolchain",
         "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
     ],
 )
+
+def emcc_binary(name, **kwargs):
+    _emcc_binary(
+        name = name,
+        is_windows = select({
+            "@bazel_tools//src/conditions:host_windows": True,
+            "//conditions:default": False,
+        }),
+        **kwargs
+    )    
