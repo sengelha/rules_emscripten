@@ -42,5 +42,6 @@ git commit -m "Update CHANGELOG for release $RELEASE_VERSION"
 echo "Tagging source control with tag $GIT_TAG..."
 git tag -a "$GIT_TAG" -m "Release $RELEASE_VERSION"
 
-echo "Pushing tag to origin..."
+echo "Pushing all changes to origin..."
+git push origin
 git push origin "$GIT_TAG"
