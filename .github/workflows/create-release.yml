@@ -13,10 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Update CHANGELOG.md
-        uses: nuuday/github-changelog-action@v1.0.0
-        with:
-          next_version: ${{ github.ref }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
