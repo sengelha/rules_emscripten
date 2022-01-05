@@ -17,4 +17,5 @@ CONFIGS = [
     srcs = ["test_binary.sh"],
     args = ["$(location :{}_binary)".format(conf)],
     data = [":{}_binary".format(conf)],
+    tags = ["L0"],
 ) for conf in CONFIGS]
