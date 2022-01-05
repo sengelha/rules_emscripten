@@ -1,0 +1,5 @@
+sh_binary(
+    name = "create_release",
+    srcs = ["create_release.sh"],
+    data = ["@git_chglog_linux_amd64"]
+)

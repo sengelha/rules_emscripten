@@ -30,3 +30,13 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 # --- End build_bazel_rules_nodejs
+
+# --- Begin git_chglog support
+http_archive(
+    name = "git_chglog_linux_amd64",
+    # Latest as of 2022-01-05
+    url = "https://github.com/git-chglog/git-chglog/releases/download/v0.15.1/git-chglog_0.15.1_linux_amd64.tar.gz",
+    sha256 = "5247e4602bac520e92fca317322fe716968a27aab1d91706f316627e3a3ee8e6",
+    build_file = "@//third_party/git_chglog:git_chglog.BUILD",
+)
+# --- End git_chglog
