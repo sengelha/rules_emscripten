@@ -10,4 +10,5 @@ sh_test(
     srcs = ["test_binary.sh"],
     args = ["$(location :binary)"],
     data = [":binary"],
+    tags = ["L0"],
 )
