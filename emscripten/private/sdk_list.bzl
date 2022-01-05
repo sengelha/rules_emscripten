@@ -1,7 +1,11 @@
-DEFAULT_VERSION = "3.0.1"
+DEFAULT_VERSION = "3.1.0"
 
 SDK_REPOSITORIES = {
     # These are based on https://github.com/emscripten-core/emsdk/blob/main/bazel/revisions.bzl
+    "3.1.0": {
+        "darwin_amd64": ("https://storage.googleapis.com/webassembly/emscripten-releases-builds/mac/562e3a0af169e6dea5e6dbecac2255d67c2c8b94/wasm-binaries.tbz2", "f6c1cad729ed799e1df09eacf5aa80cce9861d69ec6d9581c17e4ba8d9b064ce"),
+        "linux_amd64": ("https://storage.googleapis.com/webassembly/emscripten-releases-builds/linux/562e3a0af169e6dea5e6dbecac2255d67c2c8b94/wasm-binaries.tbz2", "0714344e32e244e6d44d9ea75937633ab1338e417a232fb66d6dcd7d4b704e8c"),
+    },
     "3.0.1": {
         "darwin_amd64": ("https://storage.googleapis.com/webassembly/emscripten-releases-builds/mac/91b7a67a486d2430e73423a38d950d8a550826ed/wasm-binaries.tbz2", "52ec2204115b727cc4de38b5eeae147eead12b299b98e5a88653d12958cae4d4"),
         "linux_amd64": ("https://storage.googleapis.com/webassembly/emscripten-releases-builds/linux/91b7a67a486d2430e73423a38d950d8a550826ed/wasm-binaries.tbz2", "25fd430268596229c4ac38e188d7c2b31f75c2ec8172b1351d763e37c830c6af"),
