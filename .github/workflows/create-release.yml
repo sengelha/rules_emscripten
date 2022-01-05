@@ -17,7 +17,7 @@ jobs:
         id: extract_release_version
         run: echo ::set-output name=RELEASE_VERSION::${GITHUB_REF#refs/tags/v}
       - name: Archive Release
-        run: zip -x .git -r rules_emscripten-${{ steps.extract_release_version.outputs.RELEASE_VERSION }}.zip .
+        run: zip -r rules_emscripten-${{ steps.extract_release_version.outputs.RELEASE_VERSION }}.zip . -x '.git/*' 'bazel-bin/*' 'bazel-out/*' 'bazel-rules_emscripten/*' 'bazel-testlogs/*' 'node_modules/*'
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
