@@ -10,7 +10,7 @@ emscripten_rules_dependencies()
 
 load("@rules_emscripten//emscripten:def.bzl", "emscripten_setup")
 
-emscripten_setup(version = "3.0.1")
+emscripten_setup(version = "3.1.0")
 
 # --- Begin build_bazel_rules_nodejs (used by examples)
 http_archive(
