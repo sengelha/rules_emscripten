@@ -4,6 +4,7 @@
 ## [v1.5.1](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.5.0...v1.5.1) (2022-01-05)
 ### Bug Fixes
 
+* Fix create_release script to push changes
 * Fix name of git-chglog config directory
 
 ### New Features
