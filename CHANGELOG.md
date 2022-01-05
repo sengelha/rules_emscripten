@@ -1,9 +1,10 @@
 # Changelog
 
 <a name="v1.5.1"></a>
-## [v1.5.1](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.5.0...v1.5.1) (2022-01-05)
+## [v1.5.1](https://github.com/sengelha/rules_emscripten/compare/v1.5.0...v1.5.1) (2022-01-05)
 ### Bug Fixes
 
+* Fix repository URL in changelog template
 * Fix create_release script to push changes
 * Fix name of git-chglog config directory
 
@@ -15,7 +16,7 @@
 
 
 <a name="v1.5.0"></a>
-## [v1.5.0](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.4.0...v1.5.0) (2022-01-05)
+## [v1.5.0](https://github.com/sengelha/rules_emscripten/compare/v1.4.0...v1.5.0) (2022-01-05)
 ### Bug Fixes
 
 * Do not create .o from .hpp files
@@ -49,14 +50,14 @@
 
 
 <a name="v1.4.0"></a>
-## [v1.4.0](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.3.0...v1.4.0) (2021-12-26)
+## [v1.4.0](https://github.com/sengelha/rules_emscripten/compare/v1.3.0...v1.4.0) (2021-12-26)
 ### New Features
 
 * Support bazel build configurations
 
 
 <a name="v1.3.0"></a>
-## [v1.3.0](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.2.0...v1.3.0) (2021-12-21)
+## [v1.3.0](https://github.com/sengelha/rules_emscripten/compare/v1.2.0...v1.3.0) (2021-12-21)
 ### Code Refactoring
 
 * Move binary and library to context
@@ -68,14 +69,14 @@
 
 
 <a name="v1.2.0"></a>
-## [v1.2.0](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.1.0...v1.2.0) (2021-12-09)
+## [v1.2.0](https://github.com/sengelha/rules_emscripten/compare/v1.1.0...v1.2.0) (2021-12-09)
 ### New Features
 
 * Add support for pre-js and post-js
 
 
 <a name="v1.1.0"></a>
-## [v1.1.0](https://git.kcura.com:7999/pduc/yellowstone/compare/v1.0.0...v1.1.0) (2021-12-08)
+## [v1.1.0](https://github.com/sengelha/rules_emscripten/compare/v1.0.0...v1.1.0) (2021-12-08)
 ### Bug Fixes
 
 * Do not create .o from .hpp files
