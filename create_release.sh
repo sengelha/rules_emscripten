@@ -34,6 +34,9 @@ if git ls-remote --tags origin | grep -q $GIT_TAG; then
     exit 1
 fi
 
+echo "Updating local tags..."
+git pull --tags
+
 echo "Generating CHANGELOG.md..."
 $GIT_CHGLOG --tag-filter-pattern "v.*" --next-tag $GIT_TAG -o CHANGELOG.md
 git add CHANGELOG.md
