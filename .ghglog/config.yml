@@ -1,0 +1,26 @@
+style: github
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://git.kcura.com:7999/pduc/yellowstone
+options:
+  commits:
+    filters:
+      Type:
+        - chg
+        - fix
+        - new
+  commit_groups:
+    title_maps:
+      new: New Features
+      fix: Bug Fixes
+      chg: Code Refactoring
+  header:
+    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
+    pattern_maps:
+      - Type
+      - Scope
+      - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE
