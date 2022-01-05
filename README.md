@@ -27,10 +27,10 @@ Emscripten toolset.
 Add the following stanza to `WORKSPACE`:
 
 ```python
-git_repository(
+http_archive(
     name = "rules_emscripten",
-    remote = "https://github.com/sengelha/rules_emscripten.git",
-    branch = "master"
+    sha256 = "d4e2f81085f27579609411c97989bb586f7b9ae0c555345a0617c96b7d1aa47e",
+    urls = ["https://github.com/sengelha/rules_emscripten/releases/download/v1.5.2/rules_emscripten-1.5.2.zip"],
 )
 
 load("@rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies", "emscripten_setup")
