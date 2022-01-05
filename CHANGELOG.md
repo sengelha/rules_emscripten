@@ -8,6 +8,7 @@
 
 ### Code Refactoring
 
+* Remove v from release archive name and .git folder
 * Pull remote tags when performing release
 * Change to use zip binary to create release archive
 * Publish zip file when creating release
