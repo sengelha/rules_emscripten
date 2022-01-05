@@ -13,13 +13,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
+          type: 'zip'
+          filename: "rules_emscripten-${{ github.ref}}.zip"
+          exclusions: '*.git*'
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "rules_emscripten-${{ github.ref}}.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
