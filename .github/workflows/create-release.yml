@@ -14,11 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          filename: "rules_emscripten-${{ github.ref}}.zip"
-          exclusions: '*.git*'
+        run: zip -r rules_emscripten-${{ github.ref}}.zip .
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
