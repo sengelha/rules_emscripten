@@ -4,6 +4,7 @@
 ## [v1.5.2](https://github.com/sengelha/rules_emscripten/compare/v1.5.1...v1.5.2) (2022-01-05)
 ### Bug Fixes
 
+* Fix exclusion of files in release zip
 * Fix tag name extraction during release process
 
 ### Code Refactoring
