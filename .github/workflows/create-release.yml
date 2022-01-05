@@ -13,10 +13,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Extract tag name
+        id: extract_tag_name
+        run: echo ::set-output name=TAG_NAME::${GITHUB_REF#refs/tags/}
       - name: Archive Release
-        run: zip -r rules_emscripten-${{ github.ref}}.zip .
+        run: zip -r rules_emscripten-${{ steps.extract_tag_name.outputs.TAG_NAME }}.zip .
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "rules_emscripten-${{ github.ref}}.zip"
+          artifacts: "rules_emscripten-${{ steps.extract_tag_name.outputs.TAG_NAME }}.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
