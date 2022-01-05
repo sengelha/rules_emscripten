@@ -13,4 +13,5 @@ nodejs_test(
         "@npm//tape",
     ],
     entry_point = "test_module.js",
+    tags = ["L0"],
 )
