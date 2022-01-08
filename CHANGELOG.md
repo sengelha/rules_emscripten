@@ -1,5 +1,16 @@
 # Changelog
 
+<a name="v1.6.0"></a>
+## [v1.6.0](https://github.com/sengelha/rules_emscripten/compare/v1.5.2...v1.6.0) (2022-01-08)
+### Documentation Updates
+
+* Update reference to rules_emscripten in README
+
+### New Features
+
+* Add Windows support
+
+
 <a name="v1.5.2"></a>
 ## [v1.5.2](https://github.com/sengelha/rules_emscripten/compare/v1.5.1...v1.5.2) (2022-01-05)
 ### Bug Fixes
@@ -46,6 +57,10 @@
 
 <a name="v1.4.0"></a>
 ## [v1.4.0](https://github.com/sengelha/rules_emscripten/compare/v1.3.0...v1.4.0) (2022-01-05)
+### Documentation Updates
+
+* Fix link to build status
+
 ### New Features
 
 * Support bazel build configurations
@@ -83,6 +98,12 @@
 * Rename examples/c_module to examples/module
 * Separate compile and link stage
 
+### Documentation Updates
+
+* Remove version from setup in README
+* Reorder README sections
+* Add build status to README
+
 ### New Features
 
 * Add embind example
@@ -99,6 +120,10 @@
 
 * Add emscripten to CI pipeline
 * Define emscripten toolchains and use from rules
+
+### Documentation Updates
+
+* Create README for ruleset
 
 ### New Features
 
