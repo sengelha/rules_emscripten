@@ -77,12 +77,13 @@ file) and allows it be executed via `bazel run`.
 
 #### Attributes
 
-| Attribute Name  | Type             | Required?  | Description                                                                                                                  |
-| --------------- | ---------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `name`          | `Name`           | `required` | A unique name for this rule.                                                                                                 |
-| `srcs`          | `List of files`  | `required` | A list of source files required to compile the binary.                                                                       |
-| `deps`          | `List of labels` | `optional` | The dependencies of this rule.                                                                                               |
-| `configuration` | `String`         | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |
+| Attribute Name          | Type            | Required?  | Description                                                                                                                  |
+| ----------------------- | --------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `name`                  | `Name`          | `required` | A unique name for this rule.                                                                                                 |
+| `srcs`                  | `List of files` | `required` | A list of source files required to compile the binary.                                                                       |
+| `emit_wasm`             | `Boolean`       | `Optional` | Whether to emit a WASM file as part of the build.  Default = `True`.                                                         |
+| `emit_memory_init_file` | `Boolean`       | `Optional` | Whether to emit a memory init file.  Only applies if `emit_wasm = False`.  Default = `True`.                                 |
+| `configuration`         | `String`        | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |
 
 ### emcc_module
 
@@ -91,9 +92,16 @@ file).
 
 #### Attributes
 
-| Attribute Name | Type             | Required?  | Description                                            |
-| -------------- | ---------------- | ---------- | ------------------------------------------------------ |
-| `name`         | `Name`           | `required` | A unique name for this rule.                           |
-| `srcs`         | `List of files`  | `required` | A list of source files required to compile the module. |
-| `deps`         | `List of labels` | `optional` | The dependencies of this rule.                         |
-| `configuration` | `String`         | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |
+| Attribute Name          | Type              | Required?  | Description                                                                                                                  |
+| ----------------------- | ----------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `name`                  | `Name`            | `required` | A unique name for this rule.                                                                                                 |
+| `srcs`                  | `List of files`   | `required` | A list of source files required to compile the module.                                                                       |
+| `modularize`            | `Boolean`         | `optional` | Whether to output a JS module, as in the emcc `-s MODULARIZE=1` option.  Default = `True`.                                   |
+| `emit_wasm`             | `Boolean`         | `Optional` | Whether to emit a WASM file as part of the build.  Default = `True`.                                                         |
+| `emit_memory_init_file` | `Boolean`         | `Optional` | Whether to emit a memory init file.  Only applies if `emit_wasm = False`.  Default = `True`.                                 |
+| `pre_js`                | `File`            | `optional` | A JavaScript file to prepend to the output using emcc's `--pre-js` option.                                                   |
+| `post_js`               | `File`            | `optional` | A JavaScript file to append to the output using emcc's `--post-js` option.                                                   |
+| `extern_pre_js`         | `File`            | `optional` | A JavaScript file to prepend to the output using emcc's `--extern-pre-js` option.                                            |
+| `extern_post_js`        | `File`            | `optional` | A JavaScript file to append to the output using emcc's `--extern-post-js` option.                                            |
+| `linkopts`              | `List of strings` | `optional` | Additional flags to add to emcc at link time                                                                                 |
+| `configuration`         | `String`          | `optional` | The build configuration for the target (`dbg`, `opt`, or `fastbuild`).  If not specified, uses the global `-c` option value. |
