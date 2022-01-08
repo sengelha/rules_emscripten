@@ -2,7 +2,8 @@
 # rules_emscripten
 
 Bazel rules for building C/C++ code into Javascript using the
-Emscripten toolset.
+Emscripten toolset.  Supports builds on Linux, OS X, and
+Windows.
 
 ## Build Status
 
