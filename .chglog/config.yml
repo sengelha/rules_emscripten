@@ -10,11 +10,13 @@ options:
         - chg
         - fix
         - new
+        - doc
   commit_groups:
     title_maps:
       new: New Features
       fix: Bug Fixes
       chg: Code Refactoring
+      doc: Documentation Updates
   header:
     pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
