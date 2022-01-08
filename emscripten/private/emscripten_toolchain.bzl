@@ -19,6 +19,7 @@ def _impl(ctx):
         sdk = sdk,
         # Internal fields -- may be read by emit functions.
         _builder = ctx.executable.builder,
+        _launcher = ctx.executable.launcher,
     )]
 
 emscripten_toolchain = rule(
@@ -30,6 +31,12 @@ emscripten_toolchain = rule(
             cfg = "exec",
             executable = True,
             doc = "Tool used to execute most emscripten actions",
+        ),
+        "launcher": attr.label(
+            mandatory = True,
+            cfg = "exec",
+            executable = True,
+            doc = "Tool used to launch build binaries",
         ),
         "emos": attr.string(
             mandatory = True,
@@ -50,7 +57,7 @@ emscripten_toolchain = rule(
     provides = [platform_common.ToolchainInfo],
 )
 
-def declare_toolchains(host, sdk, builder):
+def declare_toolchains(host, sdk, builder, launcher):
     # keep in sync with generate_toolchain_names
     host_emos, _, host_emarch = host.partition("_")
     for p in PLATFORMS:
@@ -62,6 +69,7 @@ def declare_toolchains(host, sdk, builder):
             emarch = p.emarch,
             sdk = sdk,
             builder = builder,
+            launcher = launcher,
             tags = ["manual"],
             visibility = ["//visibility:public"],
         )

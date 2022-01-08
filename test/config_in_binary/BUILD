@@ -12,9 +12,10 @@ CONFIGS = [
     configuration = conf,
 ) for conf in CONFIGS]
 
-[sh_test(
+[py_test(
     name = "test_{}_binary".format(conf),
-    srcs = ["test_binary.sh"],
+    srcs = ["test_binary.py"],
+    main = "test_binary.py",
     args = ["$(location :{}_binary)".format(conf)],
     data = [":{}_binary".format(conf)],
     tags = ["L0"],

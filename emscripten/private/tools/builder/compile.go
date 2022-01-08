@@ -9,6 +9,10 @@ import (
 )
 
 func compile(args []string) error {
+	if (os.Getenv("PATH") == "") {
+		return fmt.Errorf("No PATH environment variable set")
+	}
+
 	flags := flag.NewFlagSet("EmccCompile", flag.ExitOnError)
 	emcc := flags.String("e", "", "The emcc executable")
 	node := flags.String("n", "", "The node executable")
@@ -36,6 +40,10 @@ func compile(args []string) error {
 		return fmt.Errorf("source files not specified")
 	}
 
+	emccAbsPath, err := filepath.Abs(*emcc)
+	if err != nil {
+		return err
+	}
 	emConfigAbsPath, err := filepath.Abs(*emConfig)
 	if err != nil {
 		return err
@@ -48,9 +56,6 @@ func compile(args []string) error {
 	environ := os.Environ()
 	environ = append(environ, fmt.Sprintf("EM_CONFIG=%s", emConfigAbsPath))
 	environ = append(environ, fmt.Sprintf("EM_NODE_JS=%s", nodeAbsPath))
-	if (os.Getenv("PATH") == "") {
-		environ = append(environ, "PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin")
-	}
 
 	emccArgs := []string{"-c", "-o", *output}
 	if *configuration == "opt" {
@@ -59,7 +64,8 @@ func compile(args []string) error {
 		emccArgs = append(emccArgs, "-O0")
 	}
 	emccArgs = append(emccArgs, srcFiles...)
-	cmd := exec.Command(*emcc, emccArgs...)
+
+	cmd := exec.Command(emccAbsPath, emccArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Env = environ

@@ -19,5 +19,6 @@ nodejs_test(
         "@npm//tape",
     ],
     entry_point = "test_module.js",
+    templated_args = ["$(rootpaths :module)"],
     tags = ["L0"],
 )

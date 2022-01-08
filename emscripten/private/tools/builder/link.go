@@ -10,6 +10,10 @@ import (
 )
 
 func link(args []string) error {
+	if (os.Getenv("PATH") == "") {
+		return fmt.Errorf("No PATH environment variable set")
+	}
+
 	flags := flag.NewFlagSet("EmccLink", flag.ExitOnError)
 	emcc := flags.String("e", "", "The emcc executable")
 	node := flags.String("n", "", "The node executable")
@@ -45,6 +49,10 @@ func link(args []string) error {
 		return fmt.Errorf("object files not specified")
 	}
 
+	emccAbsPath, err := filepath.Abs(*emcc)
+	if err != nil {
+		return err
+	}
 	emConfigAbsPath, err := filepath.Abs(*emConfig)
 	if err != nil {
 		return err
@@ -57,9 +65,6 @@ func link(args []string) error {
 	environ := os.Environ()
 	environ = append(environ, fmt.Sprintf("EM_CONFIG=%s", emConfigAbsPath))
 	environ = append(environ, fmt.Sprintf("EM_NODE_JS=%s", nodeAbsPath))
-	if os.Getenv("PATH") == "" {
-		environ = append(environ, "PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin")
-	}
 
 	emccArgs := []string{"-o", *output}
 	if *outputMemInit {
@@ -94,7 +99,7 @@ func link(args []string) error {
 		emccArgs = append(emccArgs, "-s", "WASM=0")
 	}
 	emccArgs = append(emccArgs, objFiles...)
-	cmd := exec.Command(*emcc, emccArgs...)
+	cmd := exec.Command(emccAbsPath, emccArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Env = environ

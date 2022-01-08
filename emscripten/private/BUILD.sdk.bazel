@@ -10,7 +10,7 @@ emscripten_sdk(
     name = "emscripten_sdk",
     emos = "{emos}",
     emarch = "{emarch}",
-    emcc = "bin/emcc{exe}",
+    emcc = "{emcc}",
     emsdk = [":emsdk"],
     emconfig = ".emconfig",
 )
@@ -20,8 +20,14 @@ go_binary(
     srcs = ["@rules_emscripten//emscripten/private/tools/builder:builder_srcs"],
 )
 
+go_binary(
+    name = "launcher",
+    srcs = ["@rules_emscripten//emscripten/private/tools/launcher:launcher_srcs"],
+)
+
 declare_toolchains(
     host = "{emos}_{emarch}",
     sdk = ":emscripten_sdk",
     builder = ":builder",
+    launcher = ":launcher",
 )
