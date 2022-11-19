@@ -1,5 +1,5 @@
 <!-- omit in toc -->
-# rules_emscripten
+# com_stevenengelhardt_rules_emscripten
 
 Bazel rules for building C/C++ code into Javascript using the
 Emscripten toolset.  Supports builds on Linux, OS X, and
@@ -29,12 +29,12 @@ Add the following stanza to `WORKSPACE`:
 
 ```python
 http_archive(
-    name = "rules_emscripten",
+    name = "com_stevenengelhardt_rules_emscripten",
     sha256 = "d4e2f81085f27579609411c97989bb586f7b9ae0c555345a0617c96b7d1aa47e",
     urls = ["https://github.com/sengelha/rules_emscripten/releases/download/v1.5.2/rules_emscripten-1.5.2.zip"],
 )
 
-load("@rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies", "emscripten_setup")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies", "emscripten_setup")
 emscripten_rules_dependencies()
 emscripten_setup()
 ```
@@ -42,7 +42,7 @@ emscripten_setup()
 Add the following stanza to `BUILD`, adjusting as needed:
 
 ```python
-load("@rules_emscripten//emscripten:def.bzl", "emcc_binary")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emcc_binary")
 
 emcc_binary(
     name = "hello_world",
@@ -56,7 +56,7 @@ For more examples, see [examples](examples).
 
 ### emscripten_setup
 
-Setup up `rules_emscripten`, including registering appropriate toolchains.
+Setup up `com_stevenengelhardt_rules_emscripten`, including registering appropriate toolchains.
 
 ```python
 emscripten_setup(version)

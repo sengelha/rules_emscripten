@@ -69,7 +69,7 @@ EMOS_EMARCH = (
 
 def _generate_constraints(names, bazel_constraints):
     return {
-        name: bazel_constraints.get(name, "@rules_emscripten//emscripten/toolchain:" + name)
+        name: bazel_constraints.get(name, "@com_stevenengelhardt_rules_emscripten//emscripten/toolchain:" + name)
         for name in names
     }
 

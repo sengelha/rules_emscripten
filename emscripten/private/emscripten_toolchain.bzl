@@ -75,10 +75,10 @@ def declare_toolchains(host, sdk, builder, launcher):
         )
         native.toolchain(
             name = toolchain_name,
-            toolchain_type = "@rules_emscripten//emscripten:toolchain",
+            toolchain_type = "@com_stevenengelhardt_rules_emscripten//emscripten:toolchain",
             exec_compatible_with = [
-                "@rules_emscripten//emscripten/toolchain:" + host_emos,
-                "@rules_emscripten//emscripten/toolchain:" + host_emarch,
+                "@com_stevenengelhardt_rules_emscripten//emscripten/toolchain:" + host_emos,
+                "@com_stevenengelhardt_rules_emscripten//emscripten/toolchain:" + host_emarch,
             ],
             target_compatible_with = p.constraints,
             toolchain = ":" + impl_name,

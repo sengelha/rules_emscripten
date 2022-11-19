@@ -56,7 +56,7 @@ def _create_build_file(ctx, platform):
     emos, _, emarch = platform.partition("_")
     ctx.template(
         "BUILD.bazel",
-        Label("@rules_emscripten//emscripten/private:BUILD.sdk.bazel"),
+        Label("@com_stevenengelhardt_rules_emscripten//emscripten/private:BUILD.sdk.bazel"),
         executable = False,
         substitutions = {
             "{emos}": emos,
@@ -92,7 +92,7 @@ def _create_emconfig(ctx):
     
     ctx.template(
         ".emconfig",
-        Label("@rules_emscripten//emscripten/private:emconfig.sdk"),
+        Label("@com_stevenengelhardt_rules_emscripten//emscripten/private:emconfig.sdk"),
         executable = False,
         substitutions = {
             "{cache}": str(ctx.path("cache").realpath),

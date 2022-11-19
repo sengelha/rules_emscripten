@@ -1,4 +1,4 @@
-load("@rules_emscripten//emscripten:def.bzl", "declare_toolchains", "emscripten_sdk")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "declare_toolchains", "emscripten_sdk")
 load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 
 filegroup(
@@ -17,12 +17,12 @@ emscripten_sdk(
 
 go_binary(
     name = "builder",
-    srcs = ["@rules_emscripten//emscripten/private/tools/builder:builder_srcs"],
+    srcs = ["@com_stevenengelhardt_rules_emscripten//emscripten/private/tools/builder:builder_srcs"],
 )
 
 go_binary(
     name = "launcher",
-    srcs = ["@rules_emscripten//emscripten/private/tools/launcher:launcher_srcs"],
+    srcs = ["@com_stevenengelhardt_rules_emscripten//emscripten/private/tools/launcher:launcher_srcs"],
 )
 
 declare_toolchains(

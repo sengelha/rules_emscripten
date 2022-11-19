@@ -1,5 +1,5 @@
 load(
-    "@rules_emscripten//emscripten/private:platforms.bzl",
+    "@com_stevenengelhardt_rules_emscripten//emscripten/private:platforms.bzl",
     "EMARCH_CONSTRAINTS",
     "EMOS_CONSTRAINTS",
     "PLATFORMS",
@@ -18,7 +18,7 @@ def declare_constraints():
     @bazel_tools//platforms:default_platform will be used most of the time).
     """
     for emos, constraint in EMOS_CONSTRAINTS.items():
-        if constraint.startswith("@rules_emscripten//emscripten/toolchain:"):
+        if constraint.startswith("@com_stevenengelhardt_rules_emscripten//emscripten/toolchain:"):
             native.constraint_value(
                 name = emos,
                 constraint_setting = "@platforms//os:os",
@@ -30,7 +30,7 @@ def declare_constraints():
             )
 
     for emarch, constraint in EMARCH_CONSTRAINTS.items():
-        if constraint.startswith("@rules_emscripten//emscripten/toolchain:"):
+        if constraint.startswith("@com_stevenengelhardt_rules_emscripten//emscripten/toolchain:"):
             native.constraint_value(
                 name = emarch,
                 constraint_setting = "@platforms//cpu:cpu",

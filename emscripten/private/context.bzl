@@ -1,5 +1,5 @@
 def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init_file = True, configuration = "fastbuild", is_windows = False):
-    emtoolchain = emscripten.toolchains["@rules_emscripten//emscripten:toolchain"]
+    emtoolchain = emscripten.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
     compile_results = emscripten.compile(
@@ -111,7 +111,7 @@ def _library(emscripten, name = "", srcs = [], modularize = True, emit_wasm = Tr
     )
 
 def emscripten_context(ctx):
-    emtoolchain = ctx.toolchains["@rules_emscripten//emscripten:toolchain"]
+    emtoolchain = ctx.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
 
     return struct(
         # Fields
