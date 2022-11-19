@@ -9,7 +9,7 @@ Windows.
 
 ![ci](https://github.com/sengelha/rules_emscripten/actions/workflows/ci.yml/badge.svg?branch=main)
 ![nightly](https://github.com/sengelha/rules_emscripten/actions/workflows/nightly.yml/badge.svg?branch=main)
-![release](https://github.com/sengelha/rules_emscripten/actions/workflows/create-release.yml/badge.svg)
+![release](https://github.com/sengelha/rules_emscripten/actions/workflows/release.yml/badge.svg)
 
 <!-- omit in toc -->
 ## Table of Contents
