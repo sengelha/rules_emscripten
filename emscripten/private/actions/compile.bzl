@@ -1,5 +1,5 @@
 def compile(emscripten, name, srcs, configuration):
-    emtoolchain = emscripten.toolchains["@rules_emscripten//emscripten:toolchain"]
+    emtoolchain = emscripten.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
     nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
 
     objs = []

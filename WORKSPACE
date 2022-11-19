@@ -1,14 +1,14 @@
 workspace(
-    name = "rules_emscripten",
+    name = "com_stevenengelhardt_rules_emscripten",
     managed_directories = {"@npm": ["node_modules"]},
 )
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies")
 
 emscripten_rules_dependencies()
 
-load("@rules_emscripten//emscripten:def.bzl", "emscripten_setup")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emscripten_setup")
 
 emscripten_setup(version = "3.1.0")
 

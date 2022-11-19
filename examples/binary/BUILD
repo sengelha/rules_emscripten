@@ -1,4 +1,4 @@
-load("@rules_emscripten//emscripten:def.bzl", "emcc_binary")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emcc_binary")
 
 emcc_binary(
     name = "binary",

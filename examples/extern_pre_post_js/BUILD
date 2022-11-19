@@ -1,4 +1,4 @@
-load("@rules_emscripten//emscripten:def.bzl", "emcc_library")
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emcc_library")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 
 emcc_library(

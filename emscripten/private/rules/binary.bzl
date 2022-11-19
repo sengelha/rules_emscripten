@@ -39,7 +39,7 @@ _emcc_binary = rule(
         'is_windows': attr.bool(mandatory = True),
     },
     toolchains = [
-        "@rules_emscripten//emscripten:toolchain",
+        "@com_stevenengelhardt_rules_emscripten//emscripten:toolchain",
         "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
     ],
 )

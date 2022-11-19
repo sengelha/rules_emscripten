@@ -53,7 +53,7 @@ emcc_library = rule(
         "configuration": attr.string(mandatory = False),
     },
     toolchains = [
-        "@rules_emscripten//emscripten:toolchain",
+        "@com_stevenengelhardt_rules_emscripten//emscripten:toolchain",
         "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
     ],
 )
