@@ -27,47 +27,25 @@ def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init
     runfiles_arr = output_arr + nodetoolchain.nodeinfo.tool_files
     if is_windows:
         runfiles_arr.append(emtoolchain._launcher)
-        executable = emscripten.actions.declare_file("{}_/launcher.bat".format(name))
-        emscripten.actions.write(
+        executable = emscripten.actions.declare_file("{}_/launcher.cmd".format(name))
+        emscripten.actions.expand_template(
             output = executable,
-            content = """@echo off
-setlocal
-
-if "%RUNFILES_MANIFEST_FILE%"=="" (
-    set RUNFILES_MANIFEST_FILE=MANIFEST
-)
-
-if not exist %RUNFILES_MANIFEST_FILE% (
-    echo ERROR: %RUNFILES_MANIFEST_FILE% file not found 1>&2
-    exit /b 1
-)
-
-for /f "tokens=1,2" %%a in (%RUNFILES_MANIFEST_FILE%) do (
-    if "%%a" == "emscripten_sdk/launcher_/launcher.exe" (
-        "%%b" -n {node} -e rules_emscripten/{js_file}
-        exit /b
-    )
-)
-
-echo ERROR: Launcher not found
-exit /b 1""".format(
-                node = nodetoolchain.nodeinfo.target_tool_path,
-                js_file = link_results.output_js.short_path,
-            ),
+            template = emscripten.file._launcher_cmd,
+            substitutions = {
+                "{node}": nodetoolchain.nodeinfo.target_tool_path,
+                "{js_file}": link_results.output_js.short_path,
+            },
             is_executable = True,
         )
     else:
         executable = emscripten.actions.declare_file("{}_/launcher.sh".format(name))
-        emscripten.actions.write(
+        emscripten.actions.expand_template(
             output = executable,
-            content = """#!/bin/bash
-
-set -euo pipefail
-
-exec {node} {js_file}""".format(
-                node = nodetoolchain.nodeinfo.tool_files[0].path,
-                js_file = link_results.output_js.short_path
-            ),
+            template = emscripten.file._launcher_sh,
+            substitutions = {
+                "{node}": nodetoolchain.nodeinfo.target_tool_path,
+                "{js_file}": link_results.output_js.short_path,
+            },
             is_executable = True,
         )
     runfiles = emscripten.runfiles(files = runfiles_arr)
