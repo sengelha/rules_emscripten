@@ -16,11 +16,11 @@ load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emscripten_s
 
 emscripten_setup(version = "3.1.0")
 
-# --- Configure build_bazel_rules_nodejs
+# --- Setup rules_nodejs and build_bazel_rules_nodejs
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 
-node_repositories(package_json = ["//:package.json"])
+node_repositories()
 
 yarn_install(
     name = "npm",
@@ -28,4 +28,4 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 
-# --- End configuring build_bazel_rules_nodejs
+# --- End setup rules_nodejs and build_bazel_rules_nodejs

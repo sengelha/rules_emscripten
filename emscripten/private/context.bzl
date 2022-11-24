@@ -1,6 +1,6 @@
 def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init_file = True, configuration = "fastbuild", is_windows = False):
     emtoolchain = emscripten.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
-    nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
+    nodetoolchain = emscripten.toolchains["@rules_nodejs//nodejs:toolchain_type"]
 
     compile_results = emscripten.compile(
         emscripten,

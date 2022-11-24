@@ -12,6 +12,14 @@ def http_archive(name, **kwargs):
 def rules_emscripten_internal_deps():
     "Fetch deps needed for local development"
     http_archive(
+        name = "build_bazel_rules_nodejs",
+        # 5.7.1, latest as of 2022-11-23.  Should be kept in sync with
+        # rules_nodejs from //emscripten/private:repositories.bzl.
+        sha256 = "5aae76dced38f784b58d9776e4ab12278bc156a9ed2b1d9fcd3e39921dc88fda",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.7.1/rules_nodejs-5.7.1.tar.gz"],
+    )
+
+    http_archive(
         name = "git_chglog_linux_amd64",
         # Latest as of 2022-01-05
         url = "https://github.com/git-chglog/git-chglog/releases/download/v0.15.1/git-chglog_0.15.1_linux_amd64.tar.gz",

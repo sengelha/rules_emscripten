@@ -1,6 +1,6 @@
 def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = False, emit_memory_init_file = False, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None, configuration = None):
     emtoolchain = emscripten.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
-    nodetoolchain = emscripten.toolchains["@build_bazel_rules_nodejs//toolchains/node:toolchain_type"]
+    nodetoolchain = emscripten.toolchains["@rules_nodejs//nodejs:toolchain_type"]
 
     inputs = objs + [emtoolchain.sdk.emconfig]
     output_js = emscripten.actions.declare_file(name + ".js")

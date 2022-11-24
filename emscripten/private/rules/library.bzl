@@ -54,6 +54,6 @@ emcc_library = rule(
     },
     toolchains = [
         "@com_stevenengelhardt_rules_emscripten//emscripten:toolchain",
-        "@build_bazel_rules_nodejs//toolchains/node:toolchain_type",
+        "@rules_nodejs//nodejs:toolchain_type",
     ],
 )
