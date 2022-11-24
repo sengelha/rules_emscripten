@@ -5,9 +5,8 @@ test:github -c opt
 # Global options set on every build and test
 # Use downloaded JDK 15 for all Java needs (replaces --javabase)
 build --java_runtime_version=remotejdk_15
-# Don't let environment variables like $PATH sneak into the build, which can
-# cause massive cache misses when they change.
-build --incompatible_strict_action_env
+# We cannot use build --incompatible_strict_action_env
+# because we rely on the system PATH to find python.exe
 # Speed up all builds by not checking if output files have been modified.
 build --noexperimental_check_output_files
 # Always show output on errors
