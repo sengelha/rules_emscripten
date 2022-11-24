@@ -8,7 +8,7 @@ def _impl(ctx):
     if ctx.attr.configuration:
         configuration = ctx.attr.configuration
     elif ctx.var["COMPILATION_MODE"]:
-        configuration = ctx.var["COMPILATION_MODE"] # Could be one of fastbuild, dbg, or opt
+        configuration = ctx.var["COMPILATION_MODE"]  # Could be one of fastbuild, dbg, or opt
     else:
         fail("Could not determine a build configuration")
 
@@ -36,7 +36,15 @@ _emcc_binary = rule(
         "emit_wasm": attr.bool(default = True),
         "emit_memory_init_file": attr.bool(default = True),
         "configuration": attr.string(mandatory = False),
-        'is_windows': attr.bool(mandatory = True),
+        "is_windows": attr.bool(mandatory = True),
+        "_launcher_cmd": attr.label(
+            default = "@com_stevenengelhardt_rules_emscripten//emscripten/private/templates:launcher.cmd",
+            allow_single_file = True,
+        ),
+        "_launcher_sh": attr.label(
+            default = "@com_stevenengelhardt_rules_emscripten//emscripten/private/templates:launcher.sh",
+            allow_single_file = True,
+        ),
     },
     toolchains = [
         "@com_stevenengelhardt_rules_emscripten//emscripten:toolchain",
