@@ -1,4 +1,21 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+exports_files(["def.bzl"])
+
 toolchain_type(
     name = "toolchain",
     visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "def",
+    srcs = ["def.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//emscripten/private:emscripten_toolchain",
+        "//emscripten/private:setup",
+        "//emscripten/private/rules:binary",
+        "//emscripten/private/rules:library",
+        "//emscripten/private/rules:sdk",
+    ],
 )
