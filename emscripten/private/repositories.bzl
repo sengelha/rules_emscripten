@@ -4,16 +4,28 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 def http_archive(name, **kwargs):
     maybe(_http_archive, name = name, **kwargs)
 
-def _rules_nodejs_deps():
+def _build_bazel_rules_nodejs_deps():
     pass
+
+def _build_bazel_rules_nodejs():
+    _build_bazel_rules_nodejs_deps()
+    http_archive(
+        name = "build_bazel_rules_nodejs",
+        # 5.8.0, latest as of 2022-12-23
+        sha256 = "dcc55f810142b6cf46a44d0180a5a7fb923c04a5061e2e8d8eb05ccccc60864b",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.8.0/rules_nodejs-5.8.0.tar.gz"],
+    )
+
+def _rules_nodejs_deps():
+    _build_bazel_rules_nodejs()
 
 def _rules_nodejs():
     _rules_nodejs_deps()
     http_archive(
         name = "rules_nodejs",
-        # 5.7.1, latest as of 2022-11-23
-        sha256 = "50adf0b0ff6fc77d6909a790df02eefbbb3bc2b154ece3406361dda49607a7bd",
-        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.7.1/rules_nodejs-core-5.7.1.tar.gz"],
+        # 5.8.0, latest as of 2022-12-23
+        sha256 = "08337d4fffc78f7fe648a93be12ea2fc4e8eb9795a4e6aa48595b66b34555626",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.8.0/rules_nodejs-core-5.8.0.tar.gz"],
     )
 
 def _bazel_skylib_deps():

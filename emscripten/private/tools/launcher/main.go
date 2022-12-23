@@ -53,6 +53,13 @@ func parseManifest(manifestFile string) (map[string]string, error) {
 }
 
 func resolveRunfile(ref string) (string, error) {
+	// If we're passed in a path that we can open directly, use that
+	resolvedPath := filepath.FromSlash(ref)
+	if _, err := os.Stat(resolvedPath); err == nil {
+		return resolvedPath, nil
+	}
+
+	// Otherwise, try to resolve it from a manifest file (if it exists)
 	manifestFile, err := findManifestFile()
 	if err != nil {
 		return "", err
@@ -68,7 +75,7 @@ func resolveRunfile(ref string) (string, error) {
 		return p, nil
 	}
 
-	return "", fmt.Errorf("Runfile %s not found in manifest", ref)
+	return "", fmt.Errorf("Runfile %s not found in manifest %s", ref, manifestFile)
 }
 
 func main() {
