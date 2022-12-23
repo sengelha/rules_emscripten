@@ -19,7 +19,7 @@ def _impl(ctx):
         emit_wasm = ctx.attr.emit_wasm,
         emit_memory_init_file = ctx.attr.emit_memory_init_file,
         configuration = configuration,
-        is_windows = ctx.attr.is_windows,
+        is_windows = ctx.attr.private_is_windows,
     )
 
     return DefaultInfo(
@@ -36,7 +36,7 @@ _emcc_binary = rule(
         "emit_wasm": attr.bool(default = True),
         "emit_memory_init_file": attr.bool(default = True),
         "configuration": attr.string(mandatory = False),
-        "is_windows": attr.bool(mandatory = True),
+        "private_is_windows": attr.bool(mandatory = True),
         "_launcher_cmd": attr.label(
             default = "@com_stevenengelhardt_rules_emscripten//emscripten/private/templates:launcher.cmd",
             allow_single_file = True,
@@ -55,7 +55,7 @@ _emcc_binary = rule(
 def emcc_binary(name, **kwargs):
     _emcc_binary(
         name = name,
-        is_windows = select({
+        private_is_windows = select({
             "@bazel_tools//src/conditions:host_windows": True,
             "//conditions:default": False,
         }),
