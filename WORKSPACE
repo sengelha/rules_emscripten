@@ -14,7 +14,7 @@ emscripten_rules_dependencies()
 
 load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emscripten_setup")
 
-emscripten_setup(version = "3.1.0")
+emscripten_setup(version = "3.1.30")
 
 # --- Setup rules_nodejs and build_bazel_rules_nodejs
 
