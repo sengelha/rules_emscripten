@@ -1,7 +1,3 @@
-# All GitHub Actions builds
-build:github -c opt
-test:github -c opt
-
 # Global options set on every build and test
 # Use downloaded JDK 15 for all Java needs (replaces --javabase)
 build --java_runtime_version=remotejdk_15
