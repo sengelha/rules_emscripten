@@ -39,10 +39,19 @@ jobs:
           fi
         shell: bash
 
-      - name: bazel test //...
+      - name: bazel test //... (non-Windows)
         env:
           # Bazelisk will download bazel to here, ensure it is cached between runs.
           XDG_CACHE_HOME: ~/.cache/bazel-repo
         working-directory: ${{ matrix.folder }}
+        if: !contains(matrix.os, 'windows')
         run: bazel --bazelrc=$GITHUB_WORKSPACE/.github/workflows/ci.bazelrc --bazelrc=.bazelrc test //...
-        shell: bash
+
+      - name: bazel test //... (Windows)
+        env:
+          # Bazelisk will download bazel to here, ensure it is cached between runs.
+          XDG_CACHE_HOME: ~/.cache/bazel-repo
+        working-directory: ${{ matrix.folder }}
+        if: contains(matrix.os, 'windows')
+        run: bazel --bazelrc=%GITHUB_WORKSPACE%\.github\workflows\ci.bazelrc --bazelrc=.bazelrc test //...
+        shell: cmd
