@@ -44,7 +44,7 @@ jobs:
           # Bazelisk will download bazel to here, ensure it is cached between runs.
           XDG_CACHE_HOME: ~/.cache/bazel-repo
         working-directory: ${{ matrix.folder }}
-        if: !contains(matrix.os, 'windows')
+        if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         run: bazel --bazelrc=$GITHUB_WORKSPACE/.github/workflows/ci.bazelrc --bazelrc=.bazelrc test //...
 
       - name: bazel test //... (Windows)
