@@ -1,11 +1,7 @@
 "use strict";
 
-const runfiles = require(process.env['BAZEL_NODE_RUNFILES_HELPER']);
-const args = process.argv.slice(2);
-const module_js = runfiles.resolveWorkspaceRelative(args[0]);
-
 var tape = require('tape');
-var factory = require(module_js);
+var factory = require('module');
 
 tape("test module.js", function (test) {
     factory().then((calc) => {

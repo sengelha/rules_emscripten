@@ -32,7 +32,7 @@ def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init
             output = executable,
             template = emscripten.file._launcher_cmd,
             substitutions = {
-                "{workspace_name}": emscripten.workspace_name,
+                "{launcher_exe}": emtoolchain.tools.launcher.short_path,
                 "{node}": nodetoolchain.nodeinfo.tool_files[0].short_path,
                 "{js_file}": link_results.output_js.short_path,
             },

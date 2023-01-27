@@ -1,5 +1,5 @@
 load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emcc_library")
-load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
+load("@aspect_rules_js//js:defs.bzl", "js_test")
 
 emcc_library(
     name = "module",
@@ -12,13 +12,12 @@ emcc_library(
     linkopts = ["--bind"],
 )
 
-nodejs_test(
+js_test(
     name = "test_module",
     data = [
         ":module",
-        "@npm//tape",
+        "//:node_modules/tape",
     ],
     entry_point = "test_module.js",
-    templated_args = ["$(rootpaths :module)"],
     tags = ["L0"],
 )

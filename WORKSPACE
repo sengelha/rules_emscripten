@@ -16,16 +16,29 @@ load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emscripten_s
 
 emscripten_setup(version = "3.1.30")
 
-# --- Setup rules_nodejs and build_bazel_rules_nodejs
+# --- Load packages used by tests
 
-load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
 
-node_repositories()
+rules_js_dependencies()
 
-yarn_install(
-    name = "npm",
-    package_json = "//:package.json",
-    yarn_lock = "//:yarn.lock",
+load("@rules_nodejs//nodejs:repositories.bzl", "DEFAULT_NODE_VERSION", "nodejs_register_toolchains")
+
+nodejs_register_toolchains(
+    name = "nodejs",
+    node_version = DEFAULT_NODE_VERSION,
 )
 
-# --- End setup rules_nodejs and build_bazel_rules_nodejs
+load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
+
+npm_translate_lock(
+    name = "npm",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+
+npm_repositories()
+
+# --- End loading packages used by tests

@@ -5,6 +5,8 @@ build --java_runtime_version=remotejdk_15
 # because we rely on the system PATH to find python.exe
 # Speed up all builds by not checking if output files have been modified.
 build --noexperimental_check_output_files
+# aspects_rules_js requires --enable_runfiles on Windows to work
+build --enable_runfiles
 # Always show output on errors
 test --test_output=errors
 
