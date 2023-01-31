@@ -1,4 +1,4 @@
-def create_emconfig(ctx, cache_root, binaryen_root, emscripten_root, llvm_root):
+def create_emconfig(ctx, output_file, cache_root, binaryen_root, emscripten_root, llvm_root, frozen_cache):
     if not cache_root.exists:
         fail("cache_root {} does not exist".format(cache_root))
     if not binaryen_root.exists:
@@ -9,7 +9,7 @@ def create_emconfig(ctx, cache_root, binaryen_root, emscripten_root, llvm_root):
         fail("llvm_root {} does not exist".format(llvm_root))
 
     ctx.template(
-        ".emconfig",
+        output_file,
         Label("@com_stevenengelhardt_rules_emscripten//emscripten/private:emconfig.sdk"),
         executable = False,
         substitutions = {
@@ -17,5 +17,6 @@ def create_emconfig(ctx, cache_root, binaryen_root, emscripten_root, llvm_root):
             "{binaryen_root}": str(binaryen_root.realpath),
             "{emscripten_root}": str(emscripten_root.realpath),
             "{llvm_root}": str(llvm_root.realpath),
+            "{frozen_cache}": "True" if frozen_cache else "False",
         },
     )

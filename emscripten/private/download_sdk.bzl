@@ -1,4 +1,5 @@
 load("//emscripten/private:sdk_list.bzl", "DEFAULT_VERSION", "SDK_REPOSITORIES")
+load("emcc_cache.bzl", "init_emcc_cache")
 load("emconfig.bzl", "create_emconfig")
 load("emscripten_toolchain.bzl", "register_toolchains")
 load("platforms.bzl", "detect_host_platform", "is_windows")
@@ -66,8 +67,9 @@ def _emscripten_download_sdk_impl(ctx):
     emscripten_root = ctx.path("emsdk")
     llvm_root = ctx.path("emsdk").get_child("bin")
 
+    init_emcc_cache(ctx, emcc_exe, cache_root, binaryen_root, emscripten_root, llvm_root)
     create_sdk_build_file(ctx, platform, emcc_exe)
-    create_emconfig(ctx, cache_root, binaryen_root, emscripten_root, llvm_root)
+    create_emconfig(ctx, ".emconfig", cache_root, binaryen_root, emscripten_root, llvm_root, False)
 
     if not ctx.attr.version:
         return {

@@ -1,3 +1,4 @@
+load("emcc_cache.bzl", "init_emcc_cache")
 load("emconfig.bzl", "create_emconfig")
 load("emscripten_toolchain.bzl", "register_toolchains")
 load("platforms.bzl", "detect_host_platform", "is_windows")
@@ -58,8 +59,9 @@ def _emscripten_host_sdk_impl(ctx):
     emscripten_root = _find_emscripten_root(ctx)
     llvm_root = _find_llvm_root(ctx)
 
+    init_emcc_cache(ctx, emcc_exe, cache_root, binaryen_root, emscripten_root, llvm_root)
     create_sdk_build_file(ctx, platform, emcc_exe)
-    create_emconfig(ctx, cache_root, binaryen_root, emscripten_root, llvm_root)
+    create_emconfig(ctx, ".emconfig", cache_root, binaryen_root, emscripten_root, llvm_root, False)
 
     return None
 

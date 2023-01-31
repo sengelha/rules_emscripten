@@ -4,3 +4,4 @@ LLVM_ROOT='{llvm_root}'
 BINARYEN_ROOT='{binaryen_root}'
 NODE_JS='node'
 CACHE='{cache}'
+FROZEN_CACHE={frozen_cache}
