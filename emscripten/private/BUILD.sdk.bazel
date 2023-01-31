@@ -8,11 +8,11 @@ filegroup(
 
 emscripten_sdk(
     name = "emscripten_sdk",
-    emos = "{emos}",
     emarch = "{emarch}",
     emcc = "{emcc}",
-    emsdk = [":emsdk"],
     emconfig = ".emconfig",
+    emos = "{emos}",
+    emsdk = [":emsdk"],
 )
 
 go_binary(
@@ -26,8 +26,8 @@ go_binary(
 )
 
 declare_toolchains(
-    host = "{emos}_{emarch}",
-    sdk = ":emscripten_sdk",
     builder = ":builder",
+    host = "{emos}_{emarch}",
     launcher = ":launcher",
+    sdk = ":emscripten_sdk",
 )

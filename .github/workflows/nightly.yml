@@ -2,7 +2,7 @@ name: Nightly build and test
 on:
   schedule:
     # 1 AM UTC every day
-    - cron: '0 1 * * *'
+    - cron: "0 1 * * *"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
@@ -13,12 +13,17 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         folder:
           - "."
+          - "e2e/emsdk-3.1.1"
+          - "e2e/host_sdk"
 
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v3
 
       # We deliberately do not load Bazel cache on nightly builds to force full rebuilds
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v11
 
       - name: Check source code
         env:

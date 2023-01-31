@@ -83,3 +83,14 @@ def declare_toolchains(host, sdk, builder, launcher):
             target_compatible_with = p.constraints,
             toolchain = ":" + impl_name,
         )
+
+def generate_toolchain_names():
+    # keep in sync with declare_toolchains
+    return ["emscripten_" + p.name for p in PLATFORMS]
+
+def register_toolchains(repo):
+    labels = [
+        "@{}//:{}".format(repo, name)
+        for name in generate_toolchain_names()
+    ]
+    native.register_toolchains(*labels)
