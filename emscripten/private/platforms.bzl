@@ -93,6 +93,53 @@ def _generate_platforms():
 
 PLATFORMS = _generate_platforms()
 
-def generate_toolchain_names():
-    # keep in sync with declare_toolchains
-    return ["emscripten_" + p.name for p in PLATFORMS]
+def detect_host_platform(ctx):
+    if ctx.os.name == "linux":
+        emos, emarch = "linux", "amd64"
+        res = ctx.execute(["uname", "-p"])
+        if res.return_code == 0:
+            uname = res.stdout.strip()
+            if uname == "s390x":
+                emarch = "s390x"
+            elif uname == "i686":
+                emarch = "386"
+
+        # uname -p is not working on Aarch64 boards
+        # or for ppc64le on some distros
+        res = ctx.execute(["uname", "-m"])
+        if res.return_code == 0:
+            uname = res.stdout.strip()
+            if uname == "aarch64":
+                emarch = "arm64"
+            elif uname == "armv6l":
+                emarch = "arm"
+            elif uname == "armv7l":
+                emarch = "arm"
+            elif uname == "ppc64le":
+                emarch = "ppc64le"
+
+        # Default to amd64 when uname doesn't return a known value.
+
+    elif ctx.os.name == "mac os x":
+        emos, emarch = "darwin", "amd64"
+
+        res = ctx.execute(["uname", "-m"])
+        if res.return_code == 0:
+            uname = res.stdout.strip()
+            if uname == "arm64":
+                emarch = "arm64"
+
+        # Default to amd64 when uname doesn't return a known value.
+
+    elif ctx.os.name.startswith("windows"):
+        emos, emarch = "windows", "amd64"
+    elif ctx.os.name == "freebsd":
+        emos, emarch = "freebsd", "amd64"
+    else:
+        fail("Unsupported operating system: " + ctx.os.name)
+
+    return emos, emarch
+
+def is_windows(ctx):
+    emos, emarch = detect_host_platform(ctx)
+    return emos == "windows"

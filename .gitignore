@@ -1,3 +1,3 @@
-/bazel-*
+bazel-*
 /node_modules
 .vs/
