@@ -32,6 +32,7 @@ def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init
             output = executable,
             template = emscripten.file._launcher_cmd,
             substitutions = {
+                "{workspace_name}": emscripten.workspace_name,
                 "{node}": nodetoolchain.nodeinfo.tool_files[0].short_path,
                 "{js_file}": link_results.output_js.short_path,
             },
@@ -98,6 +99,7 @@ def emscripten_context(ctx):
         file = ctx.file,
         runfiles = ctx.runfiles,
         toolchains = ctx.toolchains,
+        workspace_name = ctx.workspace_name,
         # Action generators
         binary = _binary,
         compile = emtoolchain.actions.compile,

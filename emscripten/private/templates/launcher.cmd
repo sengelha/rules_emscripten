@@ -12,7 +12,7 @@ if not exist %RUNFILES_MANIFEST_FILE% (
 
 for /f "tokens=1,2" %%a in (%RUNFILES_MANIFEST_FILE%) do (
     if "%%a" == "emscripten_sdk/launcher_/launcher.exe" (
-        "%%b" -n {node} -e com_stevenengelhardt_rules_emscripten/{js_file}
+        "%%b" -n {node} -e {workspace_name}/{js_file}
         exit /b
     )
 )

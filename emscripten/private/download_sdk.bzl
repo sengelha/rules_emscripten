@@ -23,11 +23,12 @@ def _create_cache_dir(ctx):
 
 def _symlink_downloaded_emcc_exe(ctx):
     emcc_exe_name = "emcc.bat" if is_windows(ctx) else "emcc"
-    for exe in [emcc_exe_name, "emcc.py"]:
-        path = ctx.path("emsdk/emscripten/" + exe)
-        if not path.exists:
-            fail("Downloaded emcc {} does not exist".format(path))
-        ctx.symlink(path, "bin/" + exe)
+    emcc_exe_path = ctx.path("emsdk/emscripten/" + emcc_exe_name)
+    if not emcc_exe_path.exists:
+        fail("Downloaded emcc {} does not exist".format(emcc_exe_path))
+    # We need to symlink the entire directory because emcc requires
+    # the ability to resolve other files in it
+    ctx.symlink(emcc_exe_path.dirname, "bin")
     return ctx.path("bin/" + emcc_exe_name)
 
 def _remote_sdk(ctx, urls, sha256):
