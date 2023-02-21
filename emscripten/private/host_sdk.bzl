@@ -17,28 +17,39 @@ def _symlink_sys_emcc_exe(ctx):
 
     return ctx.path("bin/" + emcc_exe_name)
 
+def _find_emconfig_exe(ctx):
+    emconfig_exe_name = "em-config.bat" if is_windows(ctx) else "em-config"
+    emconfig_exe_path = ctx.which(emconfig_exe_name)
+    if not emconfig_exe_path:
+        fail("Could not find path to {}".format(emconfig_exe_name))
+    return emconfig_exe_path
+
 def _find_binaryen_root(ctx):
-    res = ctx.execute(["em-config", "BINARYEN_ROOT"])
+    em_config_exe = _find_emconfig_exe(ctx)
+    res = ctx.execute([em_config_exe, "BINARYEN_ROOT"])
     if res.return_code != 0:
-        fail("Could not determine emscripten binaryen_root")
+        fail("Could not determine emscripten binaryen_root: " + res.stderr)
     return ctx.path(res.stdout.strip())
 
 def _find_cache_root(ctx):
-    res = ctx.execute(["em-config", "CACHE"])
+    em_config_exe = _find_emconfig_exe(ctx)
+    res = ctx.execute([em_config_exe, "CACHE"])
     if res.return_code != 0:
-        fail("Could not determine emscripten cache root")
+        fail("Could not determine emscripten cache root: " + res.stderr)
     return ctx.path(res.stdout.strip())
 
 def _find_emscripten_root(ctx):
-    res = ctx.execute(["em-config", "EMSCRIPTEN_ROOT"])
+    em_config_exe = _find_emconfig_exe(ctx)
+    res = ctx.execute([em_config_exe, "EMSCRIPTEN_ROOT"])
     if res.return_code != 0:
-        fail("Could not determine emscripten emscripten_root")
+        fail("Could not determine emscripten emscripten_root: " + res.stderr)
     return ctx.path(res.stdout.strip())
 
 def _find_llvm_root(ctx):
-    res = ctx.execute(["em-config", "LLVM_ROOT"])
+    em_config_exe = _find_emconfig_exe(ctx)
+    res = ctx.execute([em_config_exe, "LLVM_ROOT"])
     if res.return_code != 0:
-        fail("Could not determine emscripten llvm_root")
+        fail("Could not determine emscripten llvm_root: " + res.stderr)
     return ctx.path(res.stdout.strip())
 
 def _emscripten_host_sdk_impl(ctx):
