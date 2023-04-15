@@ -17,9 +17,10 @@ def _impl(ctx):
             link = link,
         ),
         sdk = sdk,
-        # Internal fields -- may be read by emit functions.
-        _builder = ctx.executable.builder,
-        _launcher = ctx.executable.launcher,
+        tools = struct(
+            builder = ctx.executable.builder,
+            launcher = ctx.executable.launcher,
+        ),
     )]
 
 emscripten_toolchain = rule(

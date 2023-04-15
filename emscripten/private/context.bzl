@@ -26,7 +26,7 @@ def _binary(emscripten, name = "", srcs = [], emit_wasm = True, emit_memory_init
 
     runfiles_arr = output_arr + nodetoolchain.nodeinfo.tool_files
     if is_windows:
-        runfiles_arr.append(emtoolchain._launcher)
+        runfiles_arr.append(emtoolchain.tools.launcher)
         executable = emscripten.actions.declare_file("{}_/launcher.cmd".format(name))
         emscripten.actions.expand_template(
             output = executable,

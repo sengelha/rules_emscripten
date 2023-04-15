@@ -45,7 +45,7 @@ def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = 
     emscripten.actions.run(
         inputs = inputs,
         outputs = outputs,
-        executable = emtoolchain._builder,
+        executable = emtoolchain.tools.builder,
         arguments = [args],
         tools = [emtoolchain.sdk.emcc] + emtoolchain.sdk.emsdk + nodetoolchain.nodeinfo.tool_files,
         mnemonic = "EmccLink",
