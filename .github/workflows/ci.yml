@@ -25,7 +25,13 @@ jobs:
       - name: Setup Emscripten
         uses: mymindstorm/setup-emsdk@v11
 
-      - name: Check source code
+      - name: Mount emscripten cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/emscripten
+          key: ${{ runner.os }}-${{ matrix.folder }}-emscripten
+
+      - name: Static analysis
         env:
           # Bazelisk will download bazel to here, ensure it is cached between runs.
           XDG_CACHE_HOME: ~/.cache/bazel-repo

@@ -5,21 +5,31 @@ load("emscripten_toolchain.bzl", "register_toolchains")
 load("platforms.bzl", "detect_host_platform", "is_windows")
 load("sdk_build_file.bzl", "create_sdk_build_file")
 
-def _find_cache_dir(ctx):
-    if "HOME" in ctx.os.environ:
-        home_cache_dir = ctx.path(ctx.os.environ["HOME"] + "/.emscripten_cache")
-        if home_cache_dir.exists:
-            return home_cache_dir
-    return None
-
-def _create_cache_dir(ctx):
-    cache_dir = _find_cache_dir(ctx)
-    if cache_dir:
-        ctx.symlink(cache_dir, "cache")
+def _mkdirs(ctx, path):
+    if path.exists:
+        return
+    if is_windows(ctx):
+        res = ctx.execute(["cmd", "/C", "mkdir", str(path).replace('/', '\\')])
+        if res.return_code != 0:
+            fail("mkdir {path} failed: {stderr}".format(path=path, stderr=res.stderr))
     else:
-        # Implicitly emcc cache directory by creating a sentinel file within it
-        ctx.file("cache/.sentinel")
+        res = ctx.execute(["mkdir", "-p", str(path)])
+        if res.return_code != 0:
+            fail("mkdir {path} failed: {stderr}".format(path=path, stderr=res.stderr))
 
+def _get_home_dir(ctx):
+    if "HOME" in ctx.os.environ:
+        return ctx.path(ctx.os.environ["HOME"])
+    if "HOMEDRIVE" in ctx.os.environ and "HOMEPATH" in ctx.os.environ:
+        return ctx.path(ctx.os.environ["HOMEDRIVE"] + ctx.os.environ["HOMEPATH"])
+    fail("Cannot find HOME directory")
+
+def _get_workspace_cache_root(ctx):
+    home_dir = _get_home_dir(ctx)
+    dot_cache_dir = home_dir.get_child(".cache")
+    emscripten_cache_dir = dot_cache_dir.get_child("emscripten")
+    _mkdirs(ctx, emscripten_cache_dir)
+    ctx.symlink(emscripten_cache_dir, "cache")
     return ctx.path("cache")
 
 def _symlink_downloaded_emcc_exe(ctx):
@@ -27,6 +37,7 @@ def _symlink_downloaded_emcc_exe(ctx):
     emcc_exe_path = ctx.path("emsdk/emscripten/" + emcc_exe_name)
     if not emcc_exe_path.exists:
         fail("Downloaded emcc {} does not exist".format(emcc_exe_path))
+
     # We need to symlink the entire directory because emcc requires
     # the ability to resolve other files in it
     ctx.symlink(emcc_exe_path.dirname, "bin")
@@ -70,7 +81,7 @@ def _emscripten_download_sdk_impl(ctx):
 
     emcc_exe = _symlink_downloaded_emcc_exe(ctx)
     embuilder_exe = _find_embuilder_exe(ctx)
-    cache_root = _create_cache_dir(ctx)
+    cache_root = _get_workspace_cache_root(ctx)
     binaryen_root = ctx.path("emsdk")
     emscripten_root = ctx.path("emsdk")
     llvm_root = ctx.path("emsdk").get_child("bin")
@@ -91,7 +102,7 @@ _emscripten_download_sdk = repository_rule(
     attrs = {
         "version": attr.string(),
     },
-    environ = ["PATH"],
+    environ = ["HOME", "HOMEDRIVE", "HOMEPATH", "PATH"],
 )
 
 def emscripten_download_sdk(name, **kwargs):
