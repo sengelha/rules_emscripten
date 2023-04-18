@@ -32,6 +32,13 @@ def _symlink_downloaded_emcc_exe(ctx):
     ctx.symlink(emcc_exe_path.dirname, "bin")
     return ctx.path("bin/" + emcc_exe_name)
 
+def _find_embuilder_exe(ctx):
+    embuilder_exe_name = "embuilder.bat" if is_windows(ctx) else "embuilder"
+    embuilder_exe_path = ctx.path("emsdk/emscripten/" + embuilder_exe_name)
+    if not embuilder_exe_path.exists:
+        fail("Could not find path to {}".format(embuilder_exe_name))
+    return embuilder_exe_path
+
 def _remote_sdk(ctx, urls, sha256):
     if not urls:
         fail("No urls specified")
@@ -62,12 +69,13 @@ def _emscripten_download_sdk_impl(ctx):
     _remote_sdk(ctx, [url], sha256)
 
     emcc_exe = _symlink_downloaded_emcc_exe(ctx)
+    embuilder_exe = _find_embuilder_exe(ctx)
     cache_root = _create_cache_dir(ctx)
     binaryen_root = ctx.path("emsdk")
     emscripten_root = ctx.path("emsdk")
     llvm_root = ctx.path("emsdk").get_child("bin")
 
-    init_emcc_cache(ctx, emcc_exe, cache_root, binaryen_root, emscripten_root, llvm_root)
+    init_emcc_cache(ctx, embuilder_exe, cache_root, binaryen_root, emscripten_root, llvm_root)
     create_sdk_build_file(ctx, platform, emcc_exe)
     create_emconfig(ctx, ".emconfig", cache_root, binaryen_root, emscripten_root, llvm_root, False)
 
