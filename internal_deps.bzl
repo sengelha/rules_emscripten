@@ -34,3 +34,10 @@ def rules_emscripten_internal_deps():
         strip_prefix = "bazel-lib-1.8.1",
         url = "https://github.com/aspect-build/bazel-lib/archive/refs/tags/v1.8.1.tar.gz",
     )
+
+    http_archive(
+        name = "build_bazel_rules_nodejs",
+        # 5.8.0, latest as of 2022-12-23
+        sha256 = "dcc55f810142b6cf46a44d0180a5a7fb923c04a5061e2e8d8eb05ccccc60864b",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.8.0/rules_nodejs-5.8.0.tar.gz"],
+    )

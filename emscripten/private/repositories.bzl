@@ -4,20 +4,8 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 def http_archive(name, **kwargs):
     maybe(_http_archive, name = name, **kwargs)
 
-def _build_bazel_rules_nodejs_deps():
-    pass
-
-def _build_bazel_rules_nodejs():
-    _build_bazel_rules_nodejs_deps()
-    http_archive(
-        name = "build_bazel_rules_nodejs",
-        # 5.8.0, latest as of 2022-12-23
-        sha256 = "dcc55f810142b6cf46a44d0180a5a7fb923c04a5061e2e8d8eb05ccccc60864b",
-        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.8.0/rules_nodejs-5.8.0.tar.gz"],
-    )
-
 def _rules_nodejs_deps():
-    _build_bazel_rules_nodejs()
+    pass
 
 def _rules_nodejs():
     _rules_nodejs_deps()
