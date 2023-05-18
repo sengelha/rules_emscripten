@@ -1,5 +1,58 @@
 # Changelog
 
+<a name="v1.7.0"></a>
+## [v1.7.0](https://github.com/sengelha/rules_emscripten/compare/v1.6.0...v1.7.0) (2023-05-17)
+### Bug Fixes
+
+* Fix create_release.sh to work on OS X
+* Support if python is actually python3
+* Use python3 for running embuilder.py
+* More Windows fixes
+* Fix host SDK emcc invocations on Windows
+* Fix em-config invocation on Windows
+* Fix yaml GitHub Actions syntax
+* Separate out bazel test on Windows into cmd
+* Fix GitHub Actions bazel test //... failures on Windows
+* Fix tests on Windows
+* Fix Windows builds
+
+### Code Refactoring
+
+* Use ~/.cache/emscripten for emcc cache
+* Remove bazel caching from CI workflow
+* Remove windows from nightly builds
+* Move build_bazel_rules_nodejs to internal dep
+* Use embuilder EXE wrapper instead of calling Python script directly
+* Warn emcc cache during workspace init
+* Move tools to a struct inside the toolchain
+* Add e2e tests, including host_sdk
+* Cache Bazel build results between builds
+* Rename is_windows attribute to private_is_windows
+* Upgrade bazel to 5.3.2
+* Move launcher templates into private/templates directory
+* Upgrade build_bazel_rules_nodejs to 5.7.1
+* Refactor internal deps to be like bazel's reference ruleset
+* Rename release workflow
+* Make ci builds linux-only.
+* Add nightly builds
+* Rename ruleset to com_stevenengelhardt_rules_emscripten
+* Set bazelrc flags
+* Upgrade bazel version to 5.3.1
+* Upgrade bazel version to 5.2.0
+
+### Documentation Updates
+
+* Update README with latest rule documentation
+* Add notes on supported platforms to README
+* Include documentation updates in CHANGELOG generation
+
+### New Features
+
+* Add support for emcc 3.1.30
+* Add support for emcc 3.1.1
+* Add Mac-ARM64 support
+
+
 <a name="v1.6.0"></a>
 ## [v1.6.0](https://github.com/sengelha/rules_emscripten/compare/v1.5.2...v1.6.0) (2022-01-08)
 ### Documentation Updates
