@@ -20,6 +20,14 @@ def rules_emscripten_internal_deps():
     )
 
     http_archive(
+        name = "git_chglog_darwin_arm64",
+        # Latest as of 2022-01-05
+        url = "https://github.com/git-chglog/git-chglog/releases/download/v0.15.1/git-chglog_0.15.1_darwin_arm64.tar.gz",
+        sha256 = "cf0d75dffe49d4c161ba2d0e93f704f218b0790642e4b05091b2ba54e74b1e7a",
+        build_file = "@//third_party/git_chglog:git_chglog.BUILD",
+    )
+
+    http_archive(
         name = "io_bazel_stardoc",
         sha256 = "05fb57bb4ad68a360470420a3b6f5317e4f722839abc5b17ec4ef8ed465aaa47",
         urls = [

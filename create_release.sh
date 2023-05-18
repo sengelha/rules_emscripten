@@ -13,10 +13,14 @@ if [[ -z ${BUILD_WORKSPACE_DIRECTORY+x} ]]; then
   exit 1
 fi
 
-GIT_CHGLOG=$(realpath ./external/git_chglog_linux_amd64/git-chglog)
 RELEASE_VERSION=$1
 GIT_TAG=v$RELEASE_VERSION
 
+case $(uname -s)-$(uname -m) in
+Darwin-arm64) GIT_CHGLOG=$(realpath ./external/git_chglog_darwin_arm64/git-chglog);;
+Linux-amd64)  GIT_CHGLOG=$(realpath ./external/git_chglog_linux_amd64/git-chglog);;
+*)            echo "ERROR: Unhandled operating system/CPU combination $(uname -s)-$(uname -m)" 1>&2; exit 1;;
+esac
 if [[ ! -x $GIT_CHGLOG ]]; then
     echo "$GIT_CHGLOG is not executable" 1>&2
     exit 1
