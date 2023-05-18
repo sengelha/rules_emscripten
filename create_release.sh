@@ -8,7 +8,7 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 
-if [[ ! -v BUILD_WORKSPACE_DIRECTORY ]]; then
+if [[ -z ${BUILD_WORKSPACE_DIRECTORY+x} ]]; then
   echo "ERROR: BUILD_WORKSPACE_DIRECTORY environment variable is not set"
   exit 1
 fi
