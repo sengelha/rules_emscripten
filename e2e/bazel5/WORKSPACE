@@ -1,0 +1,13 @@
+# Override http_archive for local testing
+local_repository(
+    name = "com_stevenengelhardt_rules_emscripten",
+    path = "../..",
+)
+
+load("@com_stevenengelhardt_rules_emscripten//emscripten:deps.bzl", "emscripten_rules_dependencies")
+
+emscripten_rules_dependencies()
+
+load("@com_stevenengelhardt_rules_emscripten//emscripten:def.bzl", "emscripten_setup")
+
+emscripten_setup(version = "3.1.1")
