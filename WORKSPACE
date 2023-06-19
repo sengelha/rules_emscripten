@@ -1,6 +1,5 @@
 workspace(
     name = "com_stevenengelhardt_rules_emscripten",
-    managed_directories = {"@npm": ["node_modules"]},
 )
 
 load(":internal_deps.bzl", "rules_emscripten_internal_deps")
