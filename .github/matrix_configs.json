@@ -2,11 +2,11 @@
     "test": {
         "ci": {
             "os": ["ubuntu-latest"],
-            "folder": [ ".", "e2e/bazel6", "e2e/emsdk-3.1.1", "e2e/host_sdk" ]
+            "folder": [ ".", "e2e/bazel5", "e2e/bazel6", "e2e/emsdk-3.1.1", "e2e/host_sdk" ]
         },
         "nightly": {
             "os": ["ubuntu-latest", "macos-latest"],
-            "folder": [ ".", "e2e/bazel6", "e2e/emsdk-3.1.1", "e2e/host_sdk" ]
+            "folder": [ ".", "e2e/bazel5", "e2e/bazel6", "e2e/emsdk-3.1.1", "e2e/host_sdk" ]
         }
     }
 }
