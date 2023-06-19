@@ -1,0 +1,17 @@
+"Bazel dependencies"
+
+module(
+    name = "com_stevenengelhardt_rules_emscripten",
+    version = "0.0.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.4.1")
+bazel_dep(name = "platforms", version = "0.0.5")
+bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
+
+# mylang = use_extension("//mylang:extensions.bzl", "mylang")
+# mylang.toolchain(mylang_version = "1.14.2")
+# use_repo(mylang, "mylang_toolchains")
+
+# register_toolchains("@mylang_toolchains//:all")
