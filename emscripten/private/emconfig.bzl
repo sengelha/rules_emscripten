@@ -1,4 +1,16 @@
+"Functions for creating emscripten config files"
+
 def create_emconfig(ctx, output_file, cache_root, binaryen_root, emscripten_root, llvm_root, frozen_cache):
+    """Create an emconfig file for use with emcc
+
+    Args:
+      ctx: The repository context
+      output_file: The location of the emconfig file to create
+      cache_root: The location of the emscripten cache root
+      binaryen_root: The location of the binaryen root
+      emscripten_root: The location of the emscripten toolchain
+      llvm_root: The location of the LLVM toolchain
+      frozen_cache: A bool for whether or not to mark the cache as frozen"""
     if not cache_root.exists:
         fail("cache_root {} does not exist".format(cache_root))
     if not binaryen_root.exists:

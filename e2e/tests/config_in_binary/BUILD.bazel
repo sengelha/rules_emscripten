@@ -15,8 +15,8 @@ CONFIGS = [
 [py_test(
     name = "test_{}_binary".format(conf),
     srcs = ["test_binary.py"],
-    main = "test_binary.py",
     args = ["$(location :{}_binary)".format(conf)],
     data = [":{}_binary".format(conf)],
+    main = "test_binary.py",
     tags = ["L0"],
 ) for conf in CONFIGS]

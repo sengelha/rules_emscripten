@@ -8,7 +8,7 @@ def _impl(ctx):
     if ctx.attr.configuration:
         configuration = ctx.attr.configuration
     elif ctx.var["COMPILATION_MODE"]:
-        configuration = ctx.var["COMPILATION_MODE"] # Could be one of fastbuild, dbg, or opt
+        configuration = ctx.var["COMPILATION_MODE"]  # Could be one of fastbuild, dbg, or opt
     else:
         fail("Could not determine a build configuration")
 
@@ -32,7 +32,7 @@ def _impl(ctx):
         generated_files.append(results.output_wasm)
     if results.output_mem_init:
         generated_files.append(results.output_mem_init)
-    
+
     return DefaultInfo(
         files = depset(generated_files),
         runfiles = emscripten.runfiles(generated_files),

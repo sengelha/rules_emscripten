@@ -1,3 +1,5 @@
+"Repository rule for downloading the emscripten SDK"
+
 load("//emscripten/private:sdk_list.bzl", "DEFAULT_VERSION", "SDK_REPOSITORIES")
 load("emcc_cache.bzl", "init_emcc_cache")
 load("emconfig.bzl", "create_emconfig")
@@ -9,13 +11,13 @@ def _mkdirs(ctx, path):
     if path.exists:
         return
     if is_windows(ctx):
-        res = ctx.execute(["cmd", "/C", "mkdir", str(path).replace('/', '\\')])
+        res = ctx.execute(["cmd", "/C", "mkdir", str(path).replace("/", "\\")])
         if res.return_code != 0:
-            fail("mkdir {path} failed: {stderr}".format(path=path, stderr=res.stderr))
+            fail("mkdir {path} failed: {stderr}".format(path = path, stderr = res.stderr))
     else:
         res = ctx.execute(["mkdir", "-p", str(path)])
         if res.return_code != 0:
-            fail("mkdir {path} failed: {stderr}".format(path=path, stderr=res.stderr))
+            fail("mkdir {path} failed: {stderr}".format(path = path, stderr = res.stderr))
 
 def _get_home_dir(ctx):
     if "HOME" in ctx.os.environ:

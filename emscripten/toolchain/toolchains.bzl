@@ -1,3 +1,5 @@
+"Declares constraints for toolchains"
+
 load(
     "@com_stevenengelhardt_rules_emscripten//emscripten/private:platforms.bzl",
     "EMARCH_CONSTRAINTS",

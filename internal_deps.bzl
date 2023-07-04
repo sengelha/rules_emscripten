@@ -52,7 +52,7 @@ def rules_emscripten_internal_deps():
 
     http_archive(
         name = "buildifier_prebuilt",
-	# 6.1.0, latest as of 2023-07-03
+        # 6.1.0, latest as of 2023-07-03
         sha256 = "e46c16180bc49487bfd0f1ffa7345364718c57334fa0b5b67cb5f27eba10f309",
         strip_prefix = "buildifier-prebuilt-6.1.0",
         urls = [

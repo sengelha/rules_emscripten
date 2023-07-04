@@ -1,4 +1,7 @@
-load("//emscripten/private:emscripten_toolchain.bzl",
+"Public API re-exports"
+
+load(
+    "//emscripten/private:emscripten_toolchain.bzl",
     _declare_toolchains = "declare_toolchains",
     _emscripten_toolchain = "emscripten_toolchain",
 )
