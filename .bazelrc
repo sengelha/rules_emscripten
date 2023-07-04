@@ -2,8 +2,6 @@
 # Take care to document any settings that you expect users to apply.
 # Settings that apply only to CI are in .github/workflows/ci.bazelrc
 
-# Required until this is the default; expected in Bazel 7
-common --enable_bzlmod
 # Use downloaded JDK 15 for all Java needs (replaces --javabase)
 build --java_runtime_version=remotejdk_15
 # We cannot use build --incompatible_strict_action_env

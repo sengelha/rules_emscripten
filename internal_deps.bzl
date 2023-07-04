@@ -49,3 +49,13 @@ def rules_emscripten_internal_deps():
         sha256 = "dcc55f810142b6cf46a44d0180a5a7fb923c04a5061e2e8d8eb05ccccc60864b",
         urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.8.0/rules_nodejs-5.8.0.tar.gz"],
     )
+
+    http_archive(
+        name = "buildifier_prebuilt",
+	# 6.1.0, latest as of 2023-07-03
+        sha256 = "e46c16180bc49487bfd0f1ffa7345364718c57334fa0b5b67cb5f27eba10f309",
+        strip_prefix = "buildifier-prebuilt-6.1.0",
+        urls = [
+            "http://github.com/keith/buildifier-prebuilt/archive/6.1.0.tar.gz",
+        ],
+    )
