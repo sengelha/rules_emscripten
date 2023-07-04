@@ -28,3 +28,11 @@ yarn_install(
 )
 
 # --- End setup rules_nodejs and build_bazel_rules_nodejs
+
+# --- Setup buildifier_prebuilt
+
+load("@buildifier_prebuilt//:defs.bzl", "buildifier_prebuilt_register_toolchains")
+
+buildifier_prebuilt_register_toolchains()
+
+# --- End setup buildifier_prebuilt
