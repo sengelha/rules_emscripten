@@ -1,3 +1,5 @@
+"Initial setup of an emscripten workspace"
+
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
 load(":host_sdk.bzl", "emscripten_host_sdk")

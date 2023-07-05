@@ -4,12 +4,12 @@ load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_test")
 emcc_library(
     name = "module",
     srcs = ["lib.cpp"],
-    modularize = False,
-    emit_wasm = False,
     emit_memory_init_file = False,
-    extern_pre_js = "pre.js",
+    emit_wasm = False,
     extern_post_js = "post.js",
+    extern_pre_js = "pre.js",
     linkopts = ["--bind"],
+    modularize = False,
 )
 
 nodejs_test(
@@ -19,6 +19,6 @@ nodejs_test(
         "@npm//tape",
     ],
     entry_point = "test_module.js",
-    templated_args = ["$(rootpaths :module)"],
     tags = ["L0"],
+    templated_args = ["$(rootpaths :module)"],
 )

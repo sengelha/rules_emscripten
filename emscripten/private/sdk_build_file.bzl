@@ -1,4 +1,12 @@
+"Functions for creating workspace BUILD.bazel files"
+
 def create_sdk_build_file(ctx, platform, emcc_exe):
+    """Creates the workspace build file from the template.
+
+    Args:
+      ctx: A repository context
+      platform: A platform string in the form os_XXX_arch
+      emcc_exe: The emcc executable"""
     if not emcc_exe.exists:
         fail("emcc_exe {} does not exist".format(emcc_exe))
     if emcc_exe != ctx.path("bin/" + emcc_exe.basename):

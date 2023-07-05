@@ -1,4 +1,21 @@
+"The link step in an emscripten compilation"
+
 def link(emscripten, name, objs, linkopts = [], modularize = False, emit_wasm = False, emit_memory_init_file = False, pre_js = None, post_js = None, extern_pre_js = None, extern_post_js = None, configuration = None):
+    """Link emscripten objects into a final object
+
+    Args:
+      emscripten: A context object
+      name: The name of the rule
+      objs: The objects to link together
+      linkopts: The options to pass to the emcc linker
+      modularize: A boolean for whether to modularize the output
+      emit_wasm: A boolean for whether to emit WASM
+      emit_memory_init_file: A boolean for whether to emit a memory init file
+      pre_js: An optional pre_js file to add
+      post_js: An optional post_js file to add
+      extern_pre_js: An optional pre_js file to add
+      extern_post_js: An optional extern_post_js file to add
+      configuration: The configuration to use"""
     emtoolchain = emscripten.toolchains["@com_stevenengelhardt_rules_emscripten//emscripten:toolchain"]
     nodetoolchain = emscripten.toolchains["@rules_nodejs//nodejs:toolchain_type"]
 

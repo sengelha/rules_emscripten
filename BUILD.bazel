@@ -1,3 +1,5 @@
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+
 config_setting(
     name = "is_amd64_linux",
     constraint_values = [
@@ -20,6 +22,13 @@ sh_binary(
     data = select({
         ":is_amd64_linux": ["@git_chglog_linux_amd64//:git_chglog"],
         ":is_arm64_darwin": ["@git_chglog_darwin_arm64//:git_chglog"],
-        "//conditions:default": []
-    })
+        "//conditions:default": [],
+    }),
+)
+
+buildifier(
+    name = "buildifier.check",
+    exclude_patterns = ["./.git/*"],
+    lint_mode = "warn",
+    mode = "diff",
 )

@@ -1,3 +1,5 @@
+"Rule for loading an emscripten SDK"
+
 load("//emscripten/private:providers.bzl", "EmscriptenSDK")
 
 def _impl(ctx):

@@ -1,3 +1,5 @@
+"Functions for supporting preinstalled emcc SDKs."
+
 load("emcc_cache.bzl", "init_emcc_cache")
 load("emconfig.bzl", "create_emconfig")
 load("emscripten_toolchain.bzl", "register_toolchains")
@@ -9,6 +11,7 @@ def _symlink_sys_emcc_exe(ctx):
     emcc_exe_path = ctx.which(emcc_exe_name)
     if not emcc_exe_path:
         fail("Could not find path to {}".format(emcc_exe_name))
+
     # We need to symlink the entire directory because emcc requires
     # the ability to resolve other files in it
     ctx.symlink(emcc_exe_path.dirname, "bin")

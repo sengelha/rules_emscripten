@@ -1,3 +1,5 @@
+"Platform definitions for the emscripten toolchain."
+
 BAZEL_EMOS_CONSTRAINTS = {
     "android": "@platforms//os:android",
     "darwin": "@platforms//os:osx",
@@ -94,6 +96,13 @@ def _generate_platforms():
 PLATFORMS = _generate_platforms()
 
 def detect_host_platform(ctx):
+    """Detects the host platform.153
+
+    Args:
+      ctx: A repository context
+
+    Returns:
+      A tuple of (operating system, architecture)"""
     if ctx.os.name == "linux":
         emos, emarch = "linux", "amd64"
         res = ctx.execute(["uname", "-p"])
@@ -141,5 +150,5 @@ def detect_host_platform(ctx):
     return emos, emarch
 
 def is_windows(ctx):
-    emos, emarch = detect_host_platform(ctx)
+    emos, _ = detect_host_platform(ctx)
     return emos == "windows"
