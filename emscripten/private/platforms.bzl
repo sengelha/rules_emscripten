@@ -96,7 +96,7 @@ def _generate_platforms():
 PLATFORMS = _generate_platforms()
 
 def detect_host_platform(ctx):
-    """Detects the host platform.
+    """Detects the host platform.153
 
     Args:
       ctx: A repository context
@@ -150,5 +150,5 @@ def detect_host_platform(ctx):
     return emos, emarch
 
 def is_windows(ctx):
-    emos, emarch = detect_host_platform(ctx)
+    emos, _ = detect_host_platform(ctx)
     return emos == "windows"
