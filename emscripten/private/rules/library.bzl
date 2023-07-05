@@ -1,3 +1,5 @@
+"Rule for creating a library (JS module) using emscripten"
+
 load("//emscripten/private:context.bzl", "emscripten_context")
 
 def _impl(ctx):
