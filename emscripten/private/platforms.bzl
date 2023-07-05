@@ -96,6 +96,13 @@ def _generate_platforms():
 PLATFORMS = _generate_platforms()
 
 def detect_host_platform(ctx):
+    """Detects the host platform.
+
+    Args:
+      ctx: A repository context
+
+    Returns:
+      A tuple of (operating system, architecture)"""
     if ctx.os.name == "linux":
         emos, emarch = "linux", "amd64"
         res = ctx.execute(["uname", "-p"])
