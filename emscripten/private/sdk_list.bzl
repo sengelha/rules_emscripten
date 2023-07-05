@@ -1,3 +1,5 @@
+"A list of emscripten SDKs that may be downloaded."
+
 DEFAULT_VERSION = "3.1.30"
 
 SDK_REPOSITORIES = {

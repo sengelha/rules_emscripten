@@ -1,3 +1,5 @@
+"Platform definitions for the emscripten toolchain."
+
 BAZEL_EMOS_CONSTRAINTS = {
     "android": "@platforms//os:android",
     "darwin": "@platforms//os:osx",

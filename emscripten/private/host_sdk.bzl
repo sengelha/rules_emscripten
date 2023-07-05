@@ -1,3 +1,5 @@
+"Functions for supporting preinstalled emcc SDKs."
+
 load("emcc_cache.bzl", "init_emcc_cache")
 load("emconfig.bzl", "create_emconfig")
 load("emscripten_toolchain.bzl", "register_toolchains")
